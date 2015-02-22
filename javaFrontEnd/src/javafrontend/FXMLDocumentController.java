@@ -60,6 +60,10 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Button submit;
     @FXML
+    private Button searchButton;
+    @FXML
+    private Button newClientButton;
+    @FXML
     private Tab admin;
     @FXML
     private Tab login;
@@ -80,70 +84,73 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextField clientEmailField;
     @FXML
+    private Label errorMessage;
+    @FXML
     private TableView mainTable;
     @FXML
     private MenuButton menu;
-   // private final MongoClient client;
+   
     private final MongoClient mongoClient;
 
     public FXMLDocumentController() throws UnknownHostException {
         this.mongoClient = new MongoClient("ds035750.mongolab.com",35750);
-       // this.client = new MongoClient();
+       
     }
 
     
     @FXML
     private void handleButtonAction(ActionEvent event)  {
-     // database();
-        //getServices();
-        //updateCollection();
-        //getName();
+     // password field
     }
+     @FXML
+    private void handleSearchButtonAction(ActionEvent event)  {
     
+        getName(clientNameField.getText());
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         
     }
     public void database(){
-   MongoClient mongo;
-   DB db = mongoClient.getDB("heroku_app33977271");
-   boolean auth = db.authenticate("beyoutiful","P00k!ooFff".toCharArray());
-   //save example
-        System.out.println("auth: "+ auth);
-   DBCollection table = db.getCollection("services");
-   BasicDBObject document = new BasicDBObject();
-   document.put("name","Brandon");
-   document.put("price",65);
-   document.put("description", "new toes");
-   document.put("__v",0);
-   table.insert(document);
-        
+       
+        DB db = mongoClient.getDB("heroku_app33977271");
+        boolean auth = db.authenticate("beyoutiful","P00k!ooFff".toCharArray());
+        //save example
+             System.out.println("auth: "+ auth);
+        DBCollection table = db.getCollection("services");
+        BasicDBObject document = new BasicDBObject();
+        document.put("name","Brandon");
+        document.put("price",65);
+        document.put("description", "new toes");
+        document.put("__v",0);
+        table.insert(document);
+
       
 
     
     } 
     public void getServices(){
-        MongoClient mongo;
-   DB db = mongoClient.getDB("heroku_app33977271");
-   boolean auth = db.authenticate("beyoutiful","P00k!ooFff".toCharArray());
-   //save example
-        System.out.println("auth: "+ auth);
-   DBCollection table = db.getCollection("services");
-       
- 
-	BasicDBObject searchQuery = new BasicDBObject();
-	searchQuery.put("name", "Manicure");
- 
-	DBCursor cursor = table.find(searchQuery);
- 
-	while (cursor.hasNext()) {
-		System.out.println(cursor.next());
-	}
-    }
+   
+        DB db = mongoClient.getDB("heroku_app33977271");
+        boolean auth = db.authenticate("beyoutiful","P00k!ooFff".toCharArray());
+        //save example
+             System.out.println("auth: "+ auth);
+        DBCollection table = db.getCollection("services");
+
+
+             BasicDBObject searchQuery = new BasicDBObject();
+             searchQuery.put("name", "Manicure");
+
+             DBCursor cursor = table.find(searchQuery);
+
+             while (cursor.hasNext()) {
+                     System.out.println(cursor.next());
+             }
+         }
     
     public void updateCollection(){
-        MongoClient mongo;
+       
         DB db = mongoClient.getDB("heroku_app33977271");
         boolean auth = db.authenticate("beyoutiful","P00k!ooFff".toCharArray());
    
@@ -162,73 +169,43 @@ public class FXMLDocumentController implements Initializable {
 	table.update(query, updateObj);
     }
     public void getName(String Name){
-        MongoClient mongo;
+        
         DB db = mongoClient.getDB("heroku_app33977271");
         boolean auth = db.authenticate("beyoutiful","P00k!ooFff".toCharArray());
-        DBCollection table = db.getCollection("Clients");
+        DBCollection table = db.getCollection("clients");
         BasicDBObject searchQuery = new BasicDBObject();
         searchQuery.put("name",Name);
         DBCursor cursor = table.find(searchQuery);
+       
         String ClientName=searchQuery.getString(Name);
+        //System.out.println("Looking for: "+Name);// these are to see the name your searching for is being entered
+         //if (ClientName == null){
+             errorMessage.setText(ClientName);
+            //System.out.println("Cant locate that name.");
+       // }
 	while (cursor.hasNext()) {
 		System.out.println(cursor.next());
-                System.out.println("name "+ClientName);
-                clientNameField.setText(ClientName);
+               // System.out.println("name "+ClientName);
+               
         }
     }
-}
-/*String url = "http://beyoutifulstudio.herokuapp.com/api/services/54e12e5bb84210161c2c1b45";
-       URL obj = new URL(url);
-       HttpURLConnection con = (HttpURLConnection)obj.openConnection();
-       con.setRequestProperty("Authorization", "Basic UDAwayFvb0ZmZjo=");
-       con.setRequestProperty("Content-Type", "application/json");
-       con.setRequestProperty("Accept", "application/json");
-       int responceCode= con.getResponseCode();
-        System.out.println("Responce code "+responceCode);
-        BufferedReader in = new BufferedReader( new InputStreamReader(con.getInputStream())); 
-        String inputLine; StringBuffer response = new StringBuffer();   
-        while ((inputLine = in.readLine()) != null) { 
-            response.append(inputLine); 
-        } 
-        in.close();   
-    //print result 
-        System.out.println(response.toString());
-        JSONParser parser=new JSONParser();
-        Object object = parser.parse(response.toString());
-        System.out.println("object "+ object);*/
+    public void enterClient()
+    {
+      
+        DB db = mongoClient.getDB("heroku_app33977271");
+        boolean auth = db.authenticate("beyoutiful","P00k!ooFff".toCharArray());
 
-//String url = "http://192.168.7.154:3000/api/services/";
-//       URL obj = new URL(url);
-//       HttpURLConnection con = (HttpURLConnection)obj.openConnection();
-//       con.setRequestProperty("Authorization", "Basic UDAwayFvb0ZmZjo=");
-//       con.setRequestProperty("Content-Type", "application/json; charset=utf-8" );
-//       
-//       con.setRequestProperty("Accept", "*/*");
-//       con.setRequestMethod("POST");
-//       con.setDoOutput(true);
-//       
-//       JSONObject Service = new JSONObject();
-//       JSONObject Parent = new JSONObject();
-//       
-//       Service.put("price", 65);
-//       Service.put("name", "Gels");
-//       Service.put("description","toes");
-//       Parent.put("service", Service);
-//       
-//       OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
-//       System.out.println("string "+ Parent.toString());
-//       wr.write(Parent.toString());
-//       wr.close();
-//       int responceCode= con.getResponseCode();
-//        System.out.println("Responce code "+responceCode);
-//        BufferedReader in = new BufferedReader( new InputStreamReader(con.getInputStream())); 
-//        String inputLine; StringBuffer response = new StringBuffer();   
-//        while ((inputLine = in.readLine()) != null) { 
-//            response.append(inputLine); 
-//        } 
-//        in.close();   
-//    //print result 
-//        System.out.println(response.toString());
-//        JSONParser parser=new JSONParser();
-//        Object object = parser.parse(response.toString());
-//        System.out.println("object "+ object);
+        DBCollection table = db.getCollection("clients");
+        BasicDBObject document = new BasicDBObject();
+        document.put("name",clientNameField.getText());
+        document.put("phone",clientNumberField.getText());
+        document.put("email", clientEmailField.getText());
+        document.put("address", clientAddressField.getText());
+        document.put("__v",0);
+        table.insert(document);
+        clientNameField.setText("");
+        clientNumberField.setText("");
+        clientEmailField.setText("");
+        clientAddressField.setText("");
+    }
+}
