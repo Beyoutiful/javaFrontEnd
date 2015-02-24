@@ -18,6 +18,11 @@ import com.mongodb.MongoCredential;
 import com.mongodb.ReadPreference;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Date;
@@ -30,6 +35,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import static javafx.scene.Cursor.cursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
@@ -39,6 +45,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import org.bson.BSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 /**
  *
  * @author FossRobotics
@@ -59,6 +67,8 @@ public class FXMLDocumentController implements Initializable {
     private Label clientEmail;
     @FXML
     private Button submit;
+    @FXML
+    private Button button;
     @FXML
     private Button searchButton;
     @FXML
@@ -89,6 +99,22 @@ public class FXMLDocumentController implements Initializable {
     private TableView mainTable;
     @FXML
     private MenuButton menu;
+    @FXML
+    private ChoiceBox choiceBox;
+    @FXML
+    private Label itemLabel;
+    @FXML
+    private Label priceLabel;
+    @FXML
+    private Label descriptionLabel;
+    @FXML
+    private TextField itemID;
+    @FXML
+    private TextField itemName;
+     @FXML
+    private TextField itemPrice;
+    @FXML
+    private TextArea itemDescription;
    
     private final MongoClient mongoClient;
 
@@ -99,8 +125,8 @@ public class FXMLDocumentController implements Initializable {
 
     
     @FXML
-    private void handleButtonAction(ActionEvent event)  {
-     // password field
+    private void handleButtonAction(ActionEvent event) throws IOException, MalformedURLException, ParseException  {
+     login();
     }
      @FXML
     private void handleSearchButtonAction(ActionEvent event)  {
@@ -148,7 +174,40 @@ public class FXMLDocumentController implements Initializable {
                      System.out.println(cursor.next());
              }
          }
-    
+    public void getItems(){
+   
+        DB db = mongoClient.getDB("heroku_app33977271");
+        boolean auth = db.authenticate("beyoutiful","P00k!ooFff".toCharArray());
+        //save example
+             System.out.println("auth: "+ auth);
+        DBCollection table = db.getCollection("items");
+
+
+             BasicDBObject searchQuery = new BasicDBObject();
+             
+
+             DBCursor cursor = table.find(searchQuery);
+             
+             while (cursor.hasNext()) {
+                 DBObject item = cursor.next();
+                 System.out.println(item.get("_id"));
+                 choiceBox.getItems().add(item.get("name"));
+             }
+         }
+    public void populateItem(){
+         DB db = mongoClient.getDB("heroku_app33977271");
+         boolean auth = db.authenticate("beyoutiful","P00k!ooFff".toCharArray());
+             DBCollection table = db.getCollection("items");
+             BasicDBObject searchQuery = new BasicDBObject();     
+             DBCursor cursor = table.find(searchQuery);
+             while (cursor.hasNext()) {
+                 DBObject item = cursor.next();
+                itemID.setText((String)item.get("_id"));
+                itemName.setText((String)item.get("name"));
+                itemPrice.setText((String)item.get("price"));
+                itemDescription.setText((String)item.get("description"));
+             }
+    }
     public void updateCollection(){
        
         DB db = mongoClient.getDB("heroku_app33977271");
@@ -207,5 +266,27 @@ public class FXMLDocumentController implements Initializable {
         clientNumberField.setText("");
         clientEmailField.setText("");
         clientAddressField.setText("");
+    }
+    private void login() throws MalformedURLException, IOException, ParseException{
+         String url = "http://beyoutifulstudio.herokuapp.com/api/technicians?email="
+                 +userField.getText()+"&password="+passField.getText();
+       URL obj = new URL(url);
+       HttpURLConnection con = (HttpURLConnection)obj.openConnection();
+       con.setRequestProperty("Authorization", "Basic UDAwayFvb0ZmZjo=");
+       con.setRequestProperty("Content-Type", "application/json");
+       con.setRequestProperty("Accept", "application/json");
+       int responceCode= con.getResponseCode();
+        System.out.println("Responce code "+responceCode);
+        BufferedReader in = new BufferedReader( new InputStreamReader(con.getInputStream())); 
+        String inputLine; StringBuffer response = new StringBuffer();   
+        while ((inputLine = in.readLine()) != null) { 
+            response.append(inputLine); 
+        } 
+        in.close();   
+    //print result 
+        System.out.println(response.toString());
+        JSONParser parser=new JSONParser();
+        Object object = parser.parse(response.toString());
+        System.out.println("object "+ object);
     }
 }
