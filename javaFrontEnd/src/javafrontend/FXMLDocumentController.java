@@ -47,12 +47,15 @@ import javafx.scene.control.TextField;
 import org.bson.BSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
 /**
  *
  * @author FossRobotics
+ * SEAN TODO: Move the mongoclient stuff into a Class global.
+ * Doesn't need to reconnect in each method.DONE 26 FEB
  */
 public class FXMLDocumentController implements Initializable {
-    
+
     @FXML
     private Label passLabel;
     @FXML
@@ -111,182 +114,174 @@ public class FXMLDocumentController implements Initializable {
     private TextField itemID;
     @FXML
     private TextField itemName;
-     @FXML
+    @FXML
     private TextField itemPrice;
     @FXML
     private TextArea itemDescription;
-   
+
     private final MongoClient mongoClient;
 
-    public FXMLDocumentController() throws UnknownHostException {
-        this.mongoClient = new MongoClient("ds035750.mongolab.com",35750);
-       
+    public FXMLDocumentController() throws UnknownHostException 
+    {
+        this.mongoClient = new MongoClient("ds035750.mongolab.com", 35750);
+
     }
 
+    private final DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+    private final boolean AUTH = BEYOU_DB.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
+    //private static final System.out.println("auth: " + auth);
     
     @FXML
-    private void handleButtonAction(ActionEvent event) throws IOException, MalformedURLException, ParseException  {
-     login();
+    private void handleButtonAction(ActionEvent event) throws IOException, MalformedURLException, ParseException {
+        login();
     }
-     @FXML
-    private void handleSearchButtonAction(ActionEvent event)  {
-    
+
+    @FXML
+    private void handleSearchButtonAction(ActionEvent event) {
+
         getName(clientNameField.getText());
     }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        
+
     }
-    public void database(){
-       
-        DB db = mongoClient.getDB("heroku_app33977271");
-        boolean auth = db.authenticate("beyoutiful","P00k!ooFff".toCharArray());
-        //save example
-             System.out.println("auth: "+ auth);
-        DBCollection table = db.getCollection("services");
+
+    public void database() 
+    {
+        //Allowing insert to database...
+        DBCollection table = BEYOU_DB.getCollection("services");
         BasicDBObject document = new BasicDBObject();
-        document.put("name","Brandon");
-        document.put("price",65);
+        document.put("name", "Brandon");
+        document.put("price", 65);
         document.put("description", "new toes");
-        document.put("__v",0);
+        document.put("__v", 0);
         table.insert(document);
-
-      
-
-    
-    } 
-    public void getServices(){
-   
-        DB db = mongoClient.getDB("heroku_app33977271");
-        boolean auth = db.authenticate("beyoutiful","P00k!ooFff".toCharArray());
-        //save example
-             System.out.println("auth: "+ auth);
-        DBCollection table = db.getCollection("services");
-
-
-             BasicDBObject searchQuery = new BasicDBObject();
-             searchQuery.put("name", "Manicure");
-
-             DBCursor cursor = table.find(searchQuery);
-
-             while (cursor.hasNext()) {
-                     System.out.println(cursor.next());
-             }
-         }
-    public void getItems(){
-   
-        DB db = mongoClient.getDB("heroku_app33977271");
-        boolean auth = db.authenticate("beyoutiful","P00k!ooFff".toCharArray());
-        //save example
-             System.out.println("auth: "+ auth);
-        DBCollection table = db.getCollection("items");
-
-
-             BasicDBObject searchQuery = new BasicDBObject();
-             
-
-             DBCursor cursor = table.find(searchQuery);
-             
-             while (cursor.hasNext()) {
-                 DBObject item = cursor.next();
-                 System.out.println(item.get("_id"));
-                 choiceBox.getItems().add(item.get("name"));
-             }
-         }
-    public void populateItem(){
-         DB db = mongoClient.getDB("heroku_app33977271");
-         boolean auth = db.authenticate("beyoutiful","P00k!ooFff".toCharArray());
-             DBCollection table = db.getCollection("items");
-             BasicDBObject searchQuery = new BasicDBObject();     
-             DBCursor cursor = table.find(searchQuery);
-             while (cursor.hasNext()) {
-                 DBObject item = cursor.next();
-                itemID.setText((String)item.get("_id"));
-                itemName.setText((String)item.get("name"));
-                itemPrice.setText((String)item.get("price"));
-                itemDescription.setText((String)item.get("description"));
-             }
     }
-    public void updateCollection(){
-       
-        DB db = mongoClient.getDB("heroku_app33977271");
-        boolean auth = db.authenticate("beyoutiful","P00k!ooFff".toCharArray());
-   
-        System.out.println("auth: "+ auth);
-        DBCollection table = db.getCollection("services");
- 
-	BasicDBObject query = new BasicDBObject();
-	query.put("name", "Manicure-updated");
- 
-	BasicDBObject newDocument = new BasicDBObject();
-	newDocument.put("name", "Manicure");
- 
-	BasicDBObject updateObj = new BasicDBObject();
-	updateObj.put("$set", newDocument);
- 
-	table.update(query, updateObj);
-    }
-    public void getName(String Name){
-        
-        DB db = mongoClient.getDB("heroku_app33977271");
-        boolean auth = db.authenticate("beyoutiful","P00k!ooFff".toCharArray());
-        DBCollection table = db.getCollection("clients");
+
+    public void getServices() 
+    {
+        DBCollection table = BEYOU_DB.getCollection("services");
+
         BasicDBObject searchQuery = new BasicDBObject();
-        searchQuery.put("name",Name);
+        searchQuery.put("name", "Manicure");
+
         DBCursor cursor = table.find(searchQuery);
-       
-        String ClientName=searchQuery.getString(Name);
-        //System.out.println("Looking for: "+Name);// these are to see the name your searching for is being entered
-         //if (ClientName == null){
-             errorMessage.setText(ClientName);
-            //System.out.println("Cant locate that name.");
-       // }
-	while (cursor.hasNext()) {
-		System.out.println(cursor.next());
-               // System.out.println("name "+ClientName);
-               
+
+        while (cursor.hasNext()) {
+            System.out.println(cursor.next());
         }
     }
-    public void enterClient()
+    
+    
+    Item testItem = new Item();
+    testItem.getItems();
+    testItem.populateItem();
+    //***Below are the methods I've attempted to replace with the class Item -SEAN***
+    /*public void getItems() 
     {
-      
-        DB db = mongoClient.getDB("heroku_app33977271");
-        boolean auth = db.authenticate("beyoutiful","P00k!ooFff".toCharArray());
+        DBCollection table = BEYOU_DB.getCollection("items");
+        BasicDBObject searchQuery = new BasicDBObject();
+        DBCursor cursor = table.find(searchQuery);
 
-        DBCollection table = db.getCollection("clients");
+        while (cursor.hasNext()) 
+        {
+            DBObject item = cursor.next();
+            System.out.println(item.get("_id"));
+            choiceBox.getItems().add(item.get("name"));
+        }
+    }
+
+    public void populateItem() 
+    {
+        DBCollection table = BEYOU_DB.getCollection("items");
+        BasicDBObject searchQuery = new BasicDBObject();
+        DBCursor cursor = table.find(searchQuery);
+
+        while (cursor.hasNext()) {
+            DBObject item = cursor.next();
+            itemID.setText((String) item.get("_id"));
+            itemName.setText((String) item.get("name"));
+            itemPrice.setText((String) item.get("price"));
+            itemDescription.setText((String) item.get("description"));
+        }
+    }*/
+
+    //
+    public void updateCollection() 
+    {
+        DBCollection table = BEYOU_DB.getCollection("services");
+
+        BasicDBObject query = new BasicDBObject();
+        query.put("name", "Manicure-updated");
+
+        BasicDBObject newDocument = new BasicDBObject();
+        newDocument.put("name", "Manicure");
+
+        BasicDBObject updateObj = new BasicDBObject();
+        updateObj.put("$set", newDocument);
+
+        table.update(query, updateObj);
+    }
+
+    public void getName(String Name) 
+    {        
+        DBCollection table = BEYOU_DB.getCollection("clients");
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("name", Name);
+        DBCursor cursor = table.find(searchQuery);
+
+        String ClientName = searchQuery.getString(Name);
+        //System.out.println("Looking for: "+Name);// these are to see the name your searching for is being entered
+        //if (ClientName == null){
+        errorMessage.setText(ClientName);
+        //System.out.println("Cant locate that name.");
+        // }
+        while (cursor.hasNext()) {
+            System.out.println(cursor.next());
+            // System.out.println("name "+ClientName);      
+        }
+    }
+
+    //Adds new client (does not update)
+    public void enterClient() 
+    {
+        DBCollection table = BEYOU_DB.getCollection("clients");
         BasicDBObject document = new BasicDBObject();
-        document.put("name",clientNameField.getText());
-        document.put("phone",clientNumberField.getText());
+        document.put("name", clientNameField.getText());
+        document.put("phone", clientNumberField.getText());
         document.put("email", clientEmailField.getText());
         document.put("address", clientAddressField.getText());
-        document.put("__v",0);
+        document.put("__v", 0);
         table.insert(document);
         clientNameField.setText("");
         clientNumberField.setText("");
         clientEmailField.setText("");
         clientAddressField.setText("");
     }
-    private void login() throws MalformedURLException, IOException, ParseException{
-         String url = "http://beyoutifulstudio.herokuapp.com/api/technicians?email="
-                 +userField.getText()+"&password="+passField.getText();
-       URL obj = new URL(url);
-       HttpURLConnection con = (HttpURLConnection)obj.openConnection();
-       con.setRequestProperty("Authorization", "Basic UDAwayFvb0ZmZjo=");
-       con.setRequestProperty("Content-Type", "application/json");
-       con.setRequestProperty("Accept", "application/json");
-       int responceCode= con.getResponseCode();
-        System.out.println("Responce code "+responceCode);
-        BufferedReader in = new BufferedReader( new InputStreamReader(con.getInputStream())); 
-        String inputLine; StringBuffer response = new StringBuffer();   
-        while ((inputLine = in.readLine()) != null) { 
-            response.append(inputLine); 
-        } 
-        in.close();   
-    //print result 
+
+    private void login() throws MalformedURLException, IOException, ParseException {
+        String url = "http://beyoutifulstudio.herokuapp.com/api/technicians?email="
+                + userField.getText() + "&password=" + passField.getText();
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestProperty("Authorization", "Basic UDAwayFvb0ZmZjo=");
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setRequestProperty("Accept", "application/json");
+        int responceCode = con.getResponseCode();
+        System.out.println("Responce code " + responceCode);
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+        //print result 
         System.out.println(response.toString());
-        JSONParser parser=new JSONParser();
+        JSONParser parser = new JSONParser();
         Object object = parser.parse(response.toString());
-        System.out.println("object "+ object);
+        System.out.println("object " + object);
     }
 }
