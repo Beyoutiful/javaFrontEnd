@@ -57,69 +57,69 @@ import org.json.simple.parser.ParseException;
 public class FXMLDocumentController implements Initializable {
 
     @FXML
-    private Label passLabel;
+    protected static Label passLabel;
     @FXML
-    private Label userLabel;
+    protected static Label userLabel;
     @FXML
-    private Label clientName;
+    protected static Label clientName;
     @FXML
-    private Label clientNumber;
+    protected static Label clientNumber;
     @FXML
-    private Label clientAddress;
+    protected static Label clientAddress;
     @FXML
-    private Label clientEmail;
+    protected static Label clientEmail;
     @FXML
-    private Button submit;
+    protected static Button submit;
     @FXML
-    private Button button;
+    protected static Button button;
     @FXML
-    private Button searchButton;
+    protected static Button searchButton;
     @FXML
-    private Button newClientButton;
+    protected static Button newClientButton;
     @FXML
-    private Tab admin;
+    protected static Tab admin;
     @FXML
-    private Tab login;
+    protected static Tab login;
     @FXML
-    private Tab schedule;
+    protected static Tab schedule;
     @FXML
-    private DatePicker datePicker;
+    protected static DatePicker datePicker;
     @FXML
-    private TextField userField;
+    protected static TextField userField;
     @FXML
-    private PasswordField passField;
+    protected static PasswordField passField;
     @FXML
-    private TextField clientNameField;
+    protected static TextField clientNameField;
     @FXML
-    private TextField clientNumberField;
+    protected static TextField clientNumberField;
     @FXML
-    private TextArea clientAddressField;
+    protected static TextArea clientAddressField;
     @FXML
-    private TextField clientEmailField;
+    protected static TextField clientEmailField;
     @FXML
-    private Label errorMessage;
+    protected static Label errorMessage;
     @FXML
-    private TableView mainTable;
+    protected static TableView mainTable;
     @FXML
-    private MenuButton menu;
+    protected static MenuButton menu;
     @FXML
-    private ChoiceBox choiceBox;
+    protected static ChoiceBox choiceBox;
     @FXML
-    private Label itemLabel;
+    protected static Label itemLabel;
     @FXML
-    private Label priceLabel;
+    protected static Label priceLabel;
     @FXML
-    private Label descriptionLabel;
+    protected static Label descriptionLabel;
     @FXML
-    private TextField itemID;
+    protected static TextField itemID;
     @FXML
-    private TextField itemName;
+    protected static TextField itemName;
     @FXML
-    private TextField itemPrice;
+    protected static TextField itemPrice;
     @FXML
-    private TextArea itemDescription;
+    protected static TextArea itemDescription;
 
-    private final MongoClient mongoClient;
+    protected static final MongoClient mongoClient;
 
     public FXMLDocumentController() throws UnknownHostException 
     {
@@ -127,8 +127,8 @@ public class FXMLDocumentController implements Initializable {
 
     }
 
-    private final DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-    private final boolean AUTH = BEYOU_DB.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
+    protected static final DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+    protected final boolean AUTH = BEYOU_DB.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
     //private static final System.out.println("auth: " + auth);
     
     @FXML
@@ -178,37 +178,9 @@ public class FXMLDocumentController implements Initializable {
     Item testItem = new Item();
     testItem.getItems();
     testItem.populateItem();
-    //***Below are the methods I've attempted to replace with the class Item -SEAN***
-    /*public void getItems() 
-    {
-        DBCollection table = BEYOU_DB.getCollection("items");
-        BasicDBObject searchQuery = new BasicDBObject();
-        DBCursor cursor = table.find(searchQuery);
-
-        while (cursor.hasNext()) 
-        {
-            DBObject item = cursor.next();
-            System.out.println(item.get("_id"));
-            choiceBox.getItems().add(item.get("name"));
-        }
-    }
-
-    public void populateItem() 
-    {
-        DBCollection table = BEYOU_DB.getCollection("items");
-        BasicDBObject searchQuery = new BasicDBObject();
-        DBCursor cursor = table.find(searchQuery);
-
-        while (cursor.hasNext()) {
-            DBObject item = cursor.next();
-            itemID.setText((String) item.get("_id"));
-            itemName.setText((String) item.get("name"));
-            itemPrice.setText((String) item.get("price"));
-            itemDescription.setText((String) item.get("description"));
-        }
-    }*/
-
-    //
+    /* Deleted methods for the above 
+     * are preserved in Item.java --Sean, 26 Feb 2015*/
+    
     public void updateCollection() 
     {
         DBCollection table = BEYOU_DB.getCollection("services");

@@ -1,5 +1,4 @@
 package javafrontend;
-
 /**
  * @author sean
  * Implements Items collection from database
@@ -14,7 +13,7 @@ public class Item
     
     public Item()
     {
-        this.table = BEYOU_DB.getCollection("items");
+        this.table = FXMLDocumentController.BEYOU_DB.getCollection("items");
         this.searchQuery = new BasicDBObject();
         
     }
@@ -28,22 +27,23 @@ public class Item
             DBObject item = cursor.next();
             
             System.out.println(item.get("_id"));
-            choiceBox.getItems().add(item.get("name"));
+            FXMLDocumentController.choiceBox.getItems().add(item.get("name"));
         }
     }
     
     public void populateItem()
     {
-        DBCursor = table.find(searchQuery);
+        DBCursor cursor = table.find(searchQuery);
         
         while (cursor.hasNext()) 
         {
             DBObject item = cursor.next();
             
-            itemID.setText((String) item.get("_id"));
-            itemName.setText((String) item.get("name"));
-            itemPrice.setText((String) item.get("price"));
-            itemDescription.setText((String) item.get("description"));
+            FXMLDocumentController.itemID.setText((String) item.get("_id"));
+            FXMLDocumentController.itemName.setText((String) item.get("name"));
+            FXMLDocumentController.itemPrice.setText((String) item.get("price"));
+            FXMLDocumentController.itemDescription.setText((String) item.get("description"));
+        }
     }
 }
 
