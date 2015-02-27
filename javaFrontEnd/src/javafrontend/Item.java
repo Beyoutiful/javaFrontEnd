@@ -1,4 +1,5 @@
 package javafrontend;
+<<<<<<< HEAD
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -14,6 +15,8 @@ import com.mongodb.ReadPreference;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 import javafx.scene.control.ChoiceBox;
+=======
+>>>>>>> 27f2ba2fa4262804c28e1576a75b2d4213a9140f
 /**
  * @author sean
  * Implements Items collection from database
@@ -28,7 +31,11 @@ public class Item
     
     public Item()
     {
+<<<<<<< HEAD
         this.table = BEYOU_DB.getCollection("items");
+=======
+        this.table = FXMLDocumentController.BEYOU_DB.getCollection("items");
+>>>>>>> 27f2ba2fa4262804c28e1576a75b2d4213a9140f
         this.searchQuery = new BasicDBObject();
         
     }
@@ -42,7 +49,11 @@ public class Item
             DBObject item = cursor.next();
             
             System.out.println(item.get("_id"));
+<<<<<<< HEAD
             choiceBox.getItems().add(item.get("name"));
+=======
+            FXMLDocumentController.choiceBox.getItems().add(item.get("name"));
+>>>>>>> 27f2ba2fa4262804c28e1576a75b2d4213a9140f
         }
     }
     
@@ -54,10 +65,18 @@ public class Item
         {
             DBObject item = cursor.next();
             
+<<<<<<< HEAD
             itemID.setText((String) item.get("_id"));
             itemName.setText((String) item.get("name"));
             itemPrice.setText((String) item.get("price"));
             itemDescription.setText((String) item.get("description"));
+=======
+            FXMLDocumentController.itemID.setText((String) item.get("_id"));
+            FXMLDocumentController.itemName.setText((String) item.get("name"));
+            FXMLDocumentController.itemPrice.setText((String) item.get("price"));
+            FXMLDocumentController.itemDescription.setText((String) item.get("description"));
+        }
+>>>>>>> 27f2ba2fa4262804c28e1576a75b2d4213a9140f
     }
 }
 

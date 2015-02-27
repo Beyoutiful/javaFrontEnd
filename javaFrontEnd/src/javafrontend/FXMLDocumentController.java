@@ -57,62 +57,67 @@ import org.json.simple.parser.ParseException;
 public class FXMLDocumentController implements Initializable {
 
     @FXML
-    private Label passLabel;
+    protected static Label passLabel;
     @FXML
-    private Label userLabel;
+    protected static Label userLabel;
     @FXML
-    private Label clientName;
+    protected static Label clientName;
     @FXML
-    private Label clientNumber;
+    protected static Label clientNumber;
     @FXML
-    private Label clientAddress;
+    protected static Label clientAddress;
     @FXML
-    private Label clientEmail;
+    protected static Label clientEmail;
     @FXML
-    private Button submit;
+    protected static Button submit;
     @FXML
-    private Button button;
+    protected static Button button;
     @FXML
-    private Button searchButton;
+    protected static Button searchButton;
     @FXML
-    private Button newClientButton;
+    protected static Button newClientButton;
     @FXML
-    private Tab admin;
+    protected static Tab admin;
     @FXML
-    private Tab login;
+    protected static Tab login;
     @FXML
-    private Tab schedule;
+    protected static Tab schedule;
     @FXML
-    private DatePicker datePicker;
+    protected static DatePicker datePicker;
     @FXML
-    private TextField userField;
+    protected static TextField userField;
     @FXML
-    private PasswordField passField;
+    protected static PasswordField passField;
     @FXML
-    private TextField clientNameField;
+    protected static TextField clientNameField;
     @FXML
-    private TextField clientNumberField;
+    protected static TextField clientNumberField;
     @FXML
-    private TextArea clientAddressField;
+    protected static TextArea clientAddressField;
     @FXML
-    private TextField clientEmailField;
+    protected static TextField clientEmailField;
     @FXML
-    private Label errorMessage;
+    protected static Label errorMessage;
     @FXML
-    private TableView mainTable;
+    protected static TableView mainTable;
     @FXML
-    private MenuButton menu;
+    protected static MenuButton menu;
     @FXML
+<<<<<<< HEAD
      ChoiceBox choiceBox;
+=======
+    protected static ChoiceBox choiceBox;
+>>>>>>> 27f2ba2fa4262804c28e1576a75b2d4213a9140f
     @FXML
-    private Label itemLabel;
+    protected static Label itemLabel;
     @FXML
-    private Label priceLabel;
+    protected static Label priceLabel;
     @FXML
-    private Label descriptionLabel;
+    protected static Label descriptionLabel;
     @FXML
-    private TextField itemID;
+    protected static TextField itemID;
     @FXML
+<<<<<<< HEAD
     private  TextField itemName;
     @FXML
     private TextField itemPrice;
@@ -131,6 +136,25 @@ public class FXMLDocumentController implements Initializable {
 
     private final DB BEYOU_DB;
     private final boolean AUTH;
+=======
+    protected static TextField itemName;
+    @FXML
+    protected static TextField itemPrice;
+    @FXML
+    protected static TextArea itemDescription;
+
+    protected static final MongoClient mongoClient;
+
+    public FXMLDocumentController() throws UnknownHostException 
+    {
+        this.mongoClient = new MongoClient("ds035750.mongolab.com", 35750);
+
+    }
+
+    protected static final DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+    protected final boolean AUTH = BEYOU_DB.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
+    //private static final System.out.println("auth: " + auth);
+>>>>>>> 27f2ba2fa4262804c28e1576a75b2d4213a9140f
     
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException, MalformedURLException, ParseException {
@@ -164,6 +188,7 @@ public class FXMLDocumentController implements Initializable {
     public void getServices() 
     {
         DBCollection table = BEYOU_DB.getCollection("services");
+<<<<<<< HEAD
 
         BasicDBObject searchQuery = new BasicDBObject();
         searchQuery.put("name", "Manicure");
@@ -223,6 +248,39 @@ public class FXMLDocumentController implements Initializable {
         BasicDBObject updateObj = new BasicDBObject();
         updateObj.put("$set", newDocument);
 
+=======
+
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("name", "Manicure");
+
+        DBCursor cursor = table.find(searchQuery);
+
+        while (cursor.hasNext()) {
+            System.out.println(cursor.next());
+        }
+    }
+    
+    
+    Item testItem = new Item();
+    testItem.getItems();
+    testItem.populateItem();
+    /* Deleted methods for the above 
+     * are preserved in Item.java --Sean, 26 Feb 2015*/
+    
+    public void updateCollection() 
+    {
+        DBCollection table = BEYOU_DB.getCollection("services");
+
+        BasicDBObject query = new BasicDBObject();
+        query.put("name", "Manicure-updated");
+
+        BasicDBObject newDocument = new BasicDBObject();
+        newDocument.put("name", "Manicure");
+
+        BasicDBObject updateObj = new BasicDBObject();
+        updateObj.put("$set", newDocument);
+
+>>>>>>> 27f2ba2fa4262804c28e1576a75b2d4213a9140f
         table.update(query, updateObj);
     }
 
