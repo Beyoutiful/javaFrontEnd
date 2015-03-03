@@ -69,19 +69,21 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     protected static Label clientEmail;
     @FXML
-    protected static Button submit;
+    protected static Button submitButton;
     @FXML
-    protected static Button button;
+    protected static Button saveButton;
     @FXML
     protected static Button searchButton;
     @FXML
-    protected static Button newClientButton;
+    protected static Button button;
     @FXML
     protected static Tab admin;
     @FXML
     protected static Tab login;
     @FXML
     protected static Tab schedule;
+    @FXML
+    protected static Label loginLabel;
     @FXML
     protected static DatePicker datePicker;
     @FXML
@@ -102,12 +104,9 @@ public class FXMLDocumentController implements Initializable {
     protected static TableView mainTable;
     @FXML
     protected static MenuButton menu;
+   
     @FXML
-<<<<<<< HEAD
-     ChoiceBox choiceBox;
-=======
     protected static ChoiceBox choiceBox;
->>>>>>> 27f2ba2fa4262804c28e1576a75b2d4213a9140f
     @FXML
     protected static Label itemLabel;
     @FXML
@@ -117,45 +116,24 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     protected static TextField itemID;
     @FXML
-<<<<<<< HEAD
-    private  TextField itemName;
-    @FXML
-    private TextField itemPrice;
-    @FXML
-    private TextArea itemDescription;
-
-    private final MongoClient mongoClient;
-
-    public FXMLDocumentController() throws UnknownHostException 
-    {
-        this.AUTH = BEYOU_DB.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
-        this.BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-        this.mongoClient = new MongoClient("ds035750.mongolab.com", 35750);
-
-    }
-
-    private final DB BEYOU_DB;
-    private final boolean AUTH;
-=======
     protected static TextField itemName;
     @FXML
     protected static TextField itemPrice;
     @FXML
     protected static TextArea itemDescription;
+    @FXML
+    protected static MongoClient mongoClient;
 
-    protected static final MongoClient mongoClient;
-
-    public FXMLDocumentController() throws UnknownHostException 
+    public FXMLDocumentController() throws UnknownHostException
     {
-        this.mongoClient = new MongoClient("ds035750.mongolab.com", 35750);
-
+        AUTH = BEYOU_DB.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
+        BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        mongoClient = new MongoClient("ds035750.mongolab.com", 35750);
     }
 
-    protected static final DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-    protected final boolean AUTH = BEYOU_DB.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
-    //private static final System.out.println("auth: " + auth);
->>>>>>> 27f2ba2fa4262804c28e1576a75b2d4213a9140f
-    
+    protected static  DB BEYOU_DB;
+    private final boolean AUTH;
+
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException, MalformedURLException, ParseException {
         login();
@@ -188,7 +166,7 @@ public class FXMLDocumentController implements Initializable {
     public void getServices() 
     {
         DBCollection table = BEYOU_DB.getCollection("services");
-<<<<<<< HEAD
+
 
         BasicDBObject searchQuery = new BasicDBObject();
         searchQuery.put("name", "Manicure");
@@ -201,9 +179,9 @@ public class FXMLDocumentController implements Initializable {
     }
     
     
-    Item testItem = new Item();
-    testItem.getItems();
-    testItem.populateItem();
+    //Item testItem = new Item();
+    //testItem.getItems();
+    //testItem.populateItem();
     //***Below are the methods I've attempted to replace with the class Item -SEAN***
     /*public void getItems() 
     {
@@ -248,7 +226,7 @@ public class FXMLDocumentController implements Initializable {
         BasicDBObject updateObj = new BasicDBObject();
         updateObj.put("$set", newDocument);
 
-=======
+
 
         BasicDBObject searchQuery = new BasicDBObject();
         searchQuery.put("name", "Manicure");
@@ -261,29 +239,8 @@ public class FXMLDocumentController implements Initializable {
     }
     
     
-    Item testItem = new Item();
-    testItem.getItems();
-    testItem.populateItem();
-    /* Deleted methods for the above 
-     * are preserved in Item.java --Sean, 26 Feb 2015*/
-    
-    public void updateCollection() 
-    {
-        DBCollection table = BEYOU_DB.getCollection("services");
-
-        BasicDBObject query = new BasicDBObject();
-        query.put("name", "Manicure-updated");
-
-        BasicDBObject newDocument = new BasicDBObject();
-        newDocument.put("name", "Manicure");
-
-        BasicDBObject updateObj = new BasicDBObject();
-        updateObj.put("$set", newDocument);
-
->>>>>>> 27f2ba2fa4262804c28e1576a75b2d4213a9140f
-        table.update(query, updateObj);
-    }
-
+   
+  
     public void getName(String Name) 
     {        
         DBCollection table = BEYOU_DB.getCollection("clients");
@@ -328,8 +285,8 @@ public class FXMLDocumentController implements Initializable {
         con.setRequestProperty("Authorization", "Basic UDAwayFvb0ZmZjo=");
         con.setRequestProperty("Content-Type", "application/json");
         con.setRequestProperty("Accept", "application/json");
-        int responceCode = con.getResponseCode();
-        System.out.println("Responce code " + responceCode);
+        int responseCode = con.getResponseCode();
+        System.out.println("Responce code " + responseCode);
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         String inputLine;
         StringBuffer response = new StringBuffer();
@@ -342,5 +299,15 @@ public class FXMLDocumentController implements Initializable {
         JSONParser parser = new JSONParser();
         Object object = parser.parse(response.toString());
         System.out.println("object " + object);
+        
+        if(responseCode == 200){
+           // admin.setDisable(false);
+            schedule.setDisable(false);
+            loginLabel.setText("Welcome "+ userField.getText());
+            System.out.println("got here");
+        }
+        if (responseCode == 204){
+            loginLabel.setText("Wrong USER/PASSWORD.");
+        }   
     }
 }
