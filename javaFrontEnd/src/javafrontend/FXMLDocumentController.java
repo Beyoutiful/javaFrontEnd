@@ -107,19 +107,19 @@ public class FXMLDocumentController implements Initializable {
     private final MongoClient mongoClient;
 
     public FXMLDocumentController() throws UnknownHostException {
-        this.mongoClient = new MongoClient("ds035750.mongolab.com", 35750);
+        mongoClient = new MongoClient("ds035750.mongolab.com", 35750);
 
     }
 
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException, MalformedURLException, ParseException {
-       // login();
+        Login();
     }
 
     @FXML
     private void handleSearchButtonAction(ActionEvent event) {
 
-        getName(clientNameField.getText());
+        GetName(clientNameField.getText());
     }
 
     @Override
@@ -130,11 +130,11 @@ public class FXMLDocumentController implements Initializable {
 
     public void database() {
 
-        DB db = mongoClient.getDB("heroku_app33977271");
-        boolean auth = db.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
+        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        boolean auth = BEYOU_DB.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
         //save example
         System.out.println("auth: " + auth);
-        DBCollection table = db.getCollection("services");
+        DBCollection table = BEYOU_DB.getCollection("services");
         BasicDBObject document = new BasicDBObject();
         document.put("name", "Brandon");
         document.put("price", 65);
@@ -146,11 +146,11 @@ public class FXMLDocumentController implements Initializable {
 
     public void getServices() {
 
-        DB db = mongoClient.getDB("heroku_app33977271");
-        boolean auth = db.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
+        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        boolean auth = BEYOU_DB.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
         //save example
         System.out.println("auth: " + auth);
-        DBCollection table = db.getCollection("services");
+        DBCollection table = BEYOU_DB.getCollection("services");
 
         BasicDBObject searchQuery = new BasicDBObject();
         searchQuery.put("name", "Manicure");
@@ -164,11 +164,11 @@ public class FXMLDocumentController implements Initializable {
 
     public void getItems() {
 
-        DB db = mongoClient.getDB("heroku_app33977271");
-        boolean auth = db.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
+        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        boolean auth = BEYOU_DB.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
         //save example
         System.out.println("auth: " + auth);
-        DBCollection table = db.getCollection("items");
+        DBCollection table = BEYOU_DB.getCollection("items");
 
         BasicDBObject searchQuery = new BasicDBObject();
 
@@ -182,9 +182,9 @@ public class FXMLDocumentController implements Initializable {
     }
 
     public void populateItem() {
-        DB db = mongoClient.getDB("heroku_app33977271");
-        boolean auth = db.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
-        DBCollection table = db.getCollection("items");
+        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        boolean auth = BEYOU_DB.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
+        DBCollection table = BEYOU_DB.getCollection("items");
         BasicDBObject searchQuery = new BasicDBObject();
         DBCursor cursor = table.find(searchQuery);
         while (cursor.hasNext()) {
@@ -198,11 +198,11 @@ public class FXMLDocumentController implements Initializable {
 
     public void updateCollection() {
 
-        DB db = mongoClient.getDB("heroku_app33977271");
-        boolean auth = db.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
+        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        boolean auth = BEYOU_DB.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
 
         System.out.println("auth: " + auth);
-        DBCollection table = db.getCollection("services");
+        DBCollection table = BEYOU_DB.getCollection("services");
 
         BasicDBObject query = new BasicDBObject();
         query.put("name", "Manicure-updated");
@@ -216,11 +216,11 @@ public class FXMLDocumentController implements Initializable {
         table.update(query, updateObj);
     }
 
-    public void getName(String Name) {
+    public void GetName(String Name) {
 
-        DB db = mongoClient.getDB("heroku_app33977271");
-        boolean auth = db.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
-        DBCollection table = db.getCollection("clients");
+        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        boolean auth = BEYOU_DB.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
+        DBCollection table = BEYOU_DB.getCollection("clients");
         BasicDBObject searchQuery = new BasicDBObject();
         searchQuery.put("name", Name);
         DBCursor cursor = table.find(searchQuery);
@@ -238,12 +238,12 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    public void enterClient() {
+    public void EnterClient() {
 
-        DB db = mongoClient.getDB("heroku_app33977271");
-        boolean auth = db.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
+        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        boolean auth = BEYOU_DB.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
 
-        DBCollection table = db.getCollection("clients");
+        DBCollection table = BEYOU_DB.getCollection("clients");
         BasicDBObject document = new BasicDBObject();
         document.put("name", clientNameField.getText());
         document.put("phone", clientNumberField.getText());
@@ -257,7 +257,7 @@ public class FXMLDocumentController implements Initializable {
         clientAddressField.setText("");
     }
 
-    private void login() throws MalformedURLException, IOException, ParseException {
+    private void Login() throws MalformedURLException, IOException, ParseException {
         String url = "http://beyoutifulstudio.herokuapp.com/api/technicians?email="
                 + userField.getText() + "&password=" + passField.getText();
         URL obj = new URL(url);
@@ -285,10 +285,10 @@ public class FXMLDocumentController implements Initializable {
         }
         in.close();
         //print result 
-        System.out.println(response.toString());
-        JSONParser parser = new JSONParser();
-        Object object = parser.parse(response.toString());
-        System.out.println("object " + object);
+        /*System.out.println(response.toString());
+         JSONParser parser = new JSONParser();
+         Object object = parser.parse(response.toString());
+         System.out.println("object " + object);*/
 
     }
 }
