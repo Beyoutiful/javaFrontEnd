@@ -66,7 +66,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Tab login;
     @FXML
-    private Tab items;
+    private Tab Items;
     @FXML
     private DatePicker datePicker;
     @FXML
@@ -266,7 +266,7 @@ public class FXMLDocumentController implements Initializable {
         con.setRequestProperty("Content-Type", "application/json");
         con.setRequestProperty("Accept", "application/json");
         int responseCode = con.getResponseCode();
-        System.out.println("Responce code " + responseCode);
+        System.out.println("Response code " + responseCode);
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         String inputLine;
         StringBuffer response = new StringBuffer();
@@ -274,13 +274,15 @@ public class FXMLDocumentController implements Initializable {
             response.append(inputLine);
         }
         if (responseCode == 200) {
-            //loginLabel.setText("Welcome "+ userField.getText());
-            //items.setDisable(false);
-            // client.setDisable(false);
+            loginLabel.setText("Welcome "+ userField.getText());
+            Items.setDisable(false);
+            client.setDisable(false);
             System.out.println("yeah");
         }
         if (responseCode == 204) {
-            // loginLabel.setText("User/Password not found.");
+            loginLabel.setText("User/Password not found.");
+            userField.setText("");
+            passField.setText("");
             System.out.println("bummer!");
         }
         in.close();
