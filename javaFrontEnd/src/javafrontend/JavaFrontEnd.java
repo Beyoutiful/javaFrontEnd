@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author FossRobotics
+ * @author Brandon Foss
  */
 public class JavaFrontEnd extends Application {
     

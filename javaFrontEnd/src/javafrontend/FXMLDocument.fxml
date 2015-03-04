@@ -10,51 +10,24 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<TitledPane animated="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="800.0" prefWidth="1092.0" text="BeYOUtiful Nail Studio" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
-  <content>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+<Pane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafrontend.FXMLDocumentController">
+   <children>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="809.0" prefWidth="1091.0">
          <children>
-            <TabPane layoutY="95.0" prefHeight="680.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane layoutY="94.0" prefHeight="681.0" prefWidth="1089.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                  <Tab fx:id="loginTab" text="Login">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <ImageView fitHeight="472.0" fitWidth="900.0" layoutX="186.0" layoutY="90.0" opacity="0.23" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/lips.jpg" />
-                                 </image>
-                                 <effect>
-                                    <Blend />
-                                 </effect>
-                              </ImageView>
-                              <PasswordField fx:id="passField" layoutX="458.0" layoutY="313.0" promptText="password" />
-                              <TextField fx:id="userField" layoutX="458.0" layoutY="276.0" promptText="Username" />
-                              <Label fx:id="userLabel" layoutX="382.0" layoutY="280.0" text="User Name:" />
-                              <Label fx:id="passLabel" layoutX="387.0" layoutY="317.0" text="Password:" />
-                              <Label layoutX="400.0" layoutY="216.0" prefHeight="34.0" prefWidth="207.0" text="Please enter your Login." textFill="#f20606">
-                                 <font>
-                                    <Font name="System Bold Italic" size="18.0" />
-                                 </font>
-                              </Label>
-                              <Button fx:id="submit" layoutX="507.0" layoutY="353.0" mnemonicParsing="false" text="Submit" textFill="#11cf40" />
-                           </children>
-                        </AnchorPane>
-                    </content>
-                  </Tab>
-                <Tab fx:id="schedule" closable="false" text="Schedule">
+                <Tab fx:id="client" closable="false" disable="true" text="Client">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <DatePicker fx:id="datePicker" layoutX="58.0" layoutY="139.0" promptText="Date" />
                               <TextField layoutX="71.0" layoutY="193.0" promptText="name" />
                               <TextField layoutX="71.0" layoutY="218.0" promptText="phone" />
                               <TextField layoutX="71.0" layoutY="243.0" promptText="email" />
                               <Label fx:id="name" layoutX="20.0" layoutY="197.0" text="Name" />
-                              <Label fx:id="phoneNumber" layoutX="20.0" layoutY="222.0" text="Phone" />
-                              <Label fx:id="email" layoutX="20.0" layoutY="247.0" text="Email" />
-                              <TextArea fx:id="addressField" layoutX="71.0" layoutY="268.0" prefHeight="63.0" prefWidth="148.0" promptText="number,city,state and zip" />
-                              <Label fx:id="address" layoutX="23.0" layoutY="291.0" text="Address" />
+                              <Label fx:id="phoneNumber" layoutX="18.0" layoutY="223.0" text="Phone" />
+                              <Label fx:id="email" layoutX="21.0" layoutY="248.0" text="Email" />
+                              <TextArea fx:id="addressField" layoutX="71.0" layoutY="268.0" prefHeight="63.0" prefWidth="163.0" promptText="number,city,state and zip" />
+                              <Label fx:id="address" layoutX="12.0" layoutY="292.0" text="Address" />
                               <TableView layoutX="405.0" layoutY="-4.0" prefHeight="607.0" prefWidth="646.0">
                                 <columns>
                                   <TableColumn prefWidth="75.0" text="Artist" />
@@ -66,15 +39,41 @@
                                     <Image url="@../images/lips.jpg" />
                                  </image>
                               </ImageView>
+                              <Button fx:id="searchButton" layoutX="175.0" layoutY="121.0" mnemonicParsing="false" onAction="#handleSearchButtonAction" text="Search" />
+                              <Button fx:id="saveButton" layoutX="175.0" layoutY="348.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Save" />
                            </children>
                         </AnchorPane>
                   </content>
                 </Tab>
-                <Tab fx:id="admin" text="Admin">
+                <Tab fx:id="Items" disable="true" text="Items">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                   </content>
                 </Tab>
+                  <Tab fx:id="LoginTab" text="Login">
+                    <content>
+                      <AnchorPane>
+                           <children>
+                              <ImageView fitHeight="472.0" fitWidth="900.0" layoutX="173.0" layoutY="97.0" opacity="0.23" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/lips.jpg" />
+                                 </image>
+                                 
+                              </ImageView>
+                              <PasswordField fx:id="passField" layoutX="458.0" layoutY="313.0" promptText="password" />
+                              <TextField fx:id="userField" layoutX="458.0" layoutY="276.0" promptText="Username" />
+                              <Label fx:id="userLabel" layoutX="382.0" layoutY="280.0" text="User Name:" />
+                              <Label fx:id="passLabel" layoutX="387.0" layoutY="317.0" text="Password:" />
+                              <Label fx:id="loginLabel" layoutX="400.0" layoutY="216.0" prefHeight="34.0" prefWidth="236.0" text="Please enter your Login." textFill="#f20606">
+                                 <font>
+                                    <Font name="System Bold Italic" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="submit" layoutX="507.0" layoutY="353.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Submit" textFill="#11cf40" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
               </tabs>
             </TabPane>
             <ImageView fx:id="logo" fitHeight="95.0" fitWidth="1280.0" layoutX="1.0" pickOnBounds="true" preserveRatio="true">
@@ -82,6 +81,7 @@
                   <Image url="@../images/logo.png" />
                </image>
             </ImageView>
-         </children></AnchorPane>
-  </content>
-</TitledPane>
+         </children>
+      </AnchorPane>
+   </children>
+</Pane>

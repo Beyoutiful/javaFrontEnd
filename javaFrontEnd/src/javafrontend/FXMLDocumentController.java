@@ -88,7 +88,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextField clientEmailField;
     @FXML
-    private Label errorMessage;
+     protected static Label errorMessage;
     @FXML
     private TableView mainTable;
     @FXML
@@ -119,14 +119,14 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException, MalformedURLException, ParseException {
-        Password();
+        
         Login();
     }
 
     @FXML
-    private void handleSearchButtonAction(ActionEvent event) {
-
-        GetName(clientNameField.getText());
+    private void handleSearchButtonAction(ActionEvent event) throws IOException {
+    //updateCollection();
+      Database.GetName(clientNameField.getText());
     }
 
     @Override
@@ -135,10 +135,10 @@ public class FXMLDocumentController implements Initializable {
 
     }
 
-    public void database() {
+    public void database() throws IOException {
 
         DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-        boolean auth = BEYOU_DB.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
+        boolean auth = BEYOU_DB.authenticate("beyoutiful", Password().toCharArray());
         //save example
         System.out.println("auth: " + auth);
         DBCollection table = BEYOU_DB.getCollection("services");
@@ -151,10 +151,10 @@ public class FXMLDocumentController implements Initializable {
 
     }
 
-    public void getServices() {
+    public void getServices() throws IOException {
 
         DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-        boolean auth = BEYOU_DB.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
+        boolean auth = BEYOU_DB.authenticate("beyoutiful", Password().toCharArray());
         //save example
         System.out.println("auth: " + auth);
         DBCollection table = BEYOU_DB.getCollection("services");
@@ -169,10 +169,10 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    public void getItems() {
+    public void getItems() throws IOException {
 
         DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-        boolean auth = BEYOU_DB.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
+        boolean auth = BEYOU_DB.authenticate("beyoutiful", Password().toCharArray());
         //save example
         System.out.println("auth: " + auth);
         DBCollection table = BEYOU_DB.getCollection("items");
@@ -188,9 +188,9 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    public void populateItem() {
+    public void populateItem() throws IOException {
         DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-        boolean auth = BEYOU_DB.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
+        boolean auth = BEYOU_DB.authenticate("beyoutiful", Password().toCharArray());
         DBCollection table = BEYOU_DB.getCollection("items");
         BasicDBObject searchQuery = new BasicDBObject();
         DBCursor cursor = table.find(searchQuery);
@@ -202,7 +202,7 @@ public class FXMLDocumentController implements Initializable {
             itemDescription.setText((String) item.get("description"));
         }
     }
-    private String Password() throws FileNotFoundException, IOException{
+    protected static String Password() throws FileNotFoundException, IOException{
         String password="";
         try {
 			File file = new File("/Users/brandonfoss/NetBeansProjects/javaFrontEnd/javaFrontEnd/src/javafrontend/BEYOU_Config.txt");
@@ -221,13 +221,12 @@ public class FXMLDocumentController implements Initializable {
 		}
         
         return password;
-       // FileInputStream inf = new FileInputStream("/Users/brandonfoss/NetBeansProjects/javaFrontEnd/javaFrontEnd/src/javafrontend/BEYOU_Config.txt");
-        //inf.read(password);
+      
     }
-    public void updateCollection() {
-
+    public void updateCollection() throws IOException {
+        String password = Password();
         DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-        boolean auth = BEYOU_DB.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
+        boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
 
         System.out.println("auth: " + auth);
         DBCollection table = BEYOU_DB.getCollection("services");
@@ -244,10 +243,10 @@ public class FXMLDocumentController implements Initializable {
         table.update(query, updateObj);
     }
 
-    public void GetName(String Name) {
+    /*public void GetName(String Name) throws IOException {
 
         DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-        boolean auth = BEYOU_DB.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
+        boolean auth = BEYOU_DB.authenticate("beyoutiful", Password().toCharArray());
         DBCollection table = BEYOU_DB.getCollection("clients");
         BasicDBObject searchQuery = new BasicDBObject();
         searchQuery.put("name", Name);
@@ -264,12 +263,12 @@ public class FXMLDocumentController implements Initializable {
             // System.out.println("name "+ClientName);
 
         }
-    }
+    }*/
 
-    public void EnterClient() {
+    public void EnterClient() throws IOException {
 
         DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-        boolean auth = BEYOU_DB.authenticate("beyoutiful", "P00k!ooFff".toCharArray());
+        boolean auth = BEYOU_DB.authenticate("beyoutiful", Password().toCharArray());
 
         DBCollection table = BEYOU_DB.getCollection("clients");
         BasicDBObject document = new BasicDBObject();
@@ -312,11 +311,6 @@ public class FXMLDocumentController implements Initializable {
             passField.setText("");
         }
         in.close();
-        //print result 
-        /*System.out.println(response.toString());
-         JSONParser parser = new JSONParser();
-         Object object = parser.parse(response.toString());
-         System.out.println("object " + object);*/
 
     }
 }
