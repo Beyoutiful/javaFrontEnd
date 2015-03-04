@@ -126,7 +126,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void handleSearchButtonAction(ActionEvent event) throws IOException {
     //updateCollection();
-      Database.GetName(clientNameField.getText());
+     GetName("Brandon");
     }
 
     @Override
@@ -174,7 +174,6 @@ public class FXMLDocumentController implements Initializable {
         DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
         boolean auth = BEYOU_DB.authenticate("beyoutiful", Password().toCharArray());
         //save example
-        System.out.println("auth: " + auth);
         DBCollection table = BEYOU_DB.getCollection("items");
 
         BasicDBObject searchQuery = new BasicDBObject();
@@ -212,7 +211,26 @@ public class FXMLDocumentController implements Initializable {
 			String line;
 			while ((line = bufferedReader.readLine()) != null) {
 				stringBuffer.append(line);
-				stringBuffer.append("\n");
+			}
+			fileReader.close();
+                        password=stringBuffer.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        return password;
+      
+    }
+    protected static String apiPassword() throws FileNotFoundException, IOException{
+        String password="";
+        try {
+			File file = new File("/Users/brandonfoss/NetBeansProjects/javaFrontEnd/javaFrontEnd/src/javafrontend/API_Config.txt");
+			FileReader fileReader = new FileReader(file);
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			StringBuffer stringBuffer = new StringBuffer();
+			String line;
+			while ((line = bufferedReader.readLine()) != null) {
+				stringBuffer.append(line);
 			}
 			fileReader.close();
                         password=stringBuffer.toString();
@@ -243,10 +261,10 @@ public class FXMLDocumentController implements Initializable {
         table.update(query, updateObj);
     }
 
-    /*public void GetName(String Name) throws IOException {
-
+    public void GetName(String Name) throws IOException {
         DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-        boolean auth = BEYOU_DB.authenticate("beyoutiful", Password().toCharArray());
+        boolean auth;
+        auth = BEYOU_DB.authenticate("beyoutiful", Password().toCharArray());
         DBCollection table = BEYOU_DB.getCollection("clients");
         BasicDBObject searchQuery = new BasicDBObject();
         searchQuery.put("name", Name);
@@ -255,7 +273,7 @@ public class FXMLDocumentController implements Initializable {
         String ClientName = searchQuery.getString(Name);
         //System.out.println("Looking for: "+Name);// these are to see the name your searching for is being entered
         //if (ClientName == null){
-        errorMessage.setText(ClientName);
+        //errorMessage.setText(ClientName);
         //System.out.println("Cant locate that name.");
         // }
         while (cursor.hasNext()) {
@@ -263,7 +281,7 @@ public class FXMLDocumentController implements Initializable {
             // System.out.println("name "+ClientName);
 
         }
-    }*/
+    }
 
     public void EnterClient() throws IOException {
 
@@ -289,7 +307,7 @@ public class FXMLDocumentController implements Initializable {
                 + userField.getText() + "&password=" + passField.getText();
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        con.setRequestProperty("Authorization", "Basic UDAwayFvb0ZmZjo=");
+        con.setRequestProperty("Authorization", apiPassword());
         con.setRequestProperty("Content-Type", "application/json");
         con.setRequestProperty("Accept", "application/json");
         int responseCode = con.getResponseCode();
