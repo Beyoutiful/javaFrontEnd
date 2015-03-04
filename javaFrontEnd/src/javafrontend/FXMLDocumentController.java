@@ -12,12 +12,18 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -113,6 +119,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException, MalformedURLException, ParseException {
+        Password();
         Login();
     }
 
@@ -195,7 +202,28 @@ public class FXMLDocumentController implements Initializable {
             itemDescription.setText((String) item.get("description"));
         }
     }
-
+    private String Password() throws FileNotFoundException, IOException{
+        String password="";
+        try {
+			File file = new File("/Users/brandonfoss/NetBeansProjects/javaFrontEnd/javaFrontEnd/src/javafrontend/BEYOU_Config.txt");
+			FileReader fileReader = new FileReader(file);
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			StringBuffer stringBuffer = new StringBuffer();
+			String line;
+			while ((line = bufferedReader.readLine()) != null) {
+				stringBuffer.append(line);
+				stringBuffer.append("\n");
+			}
+			fileReader.close();
+                        password=stringBuffer.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        return password;
+       // FileInputStream inf = new FileInputStream("/Users/brandonfoss/NetBeansProjects/javaFrontEnd/javaFrontEnd/src/javafrontend/BEYOU_Config.txt");
+        //inf.read(password);
+    }
     public void updateCollection() {
 
         DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
@@ -277,13 +305,11 @@ public class FXMLDocumentController implements Initializable {
             loginLabel.setText("Welcome "+ userField.getText());
             Items.setDisable(false);
             client.setDisable(false);
-            System.out.println("yeah");
         }
         if (responseCode == 204) {
             loginLabel.setText("User/Password not found.");
             userField.setText("");
             passField.setText("");
-            System.out.println("bummer!");
         }
         in.close();
         //print result 
