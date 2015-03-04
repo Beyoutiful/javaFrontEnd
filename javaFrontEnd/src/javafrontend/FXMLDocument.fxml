@@ -16,7 +16,7 @@
          <children>
             <TabPane layoutY="94.0" prefHeight="681.0" prefWidth="1089.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab fx:id="client" closable="false" disable="true" text="Client">
+                <Tab fx:id="client" closable="false" text="Client">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -28,12 +28,6 @@
                               <Label fx:id="email" layoutX="21.0" layoutY="248.0" text="Email" />
                               <TextArea fx:id="addressField" layoutX="71.0" layoutY="268.0" prefHeight="63.0" prefWidth="163.0" promptText="number,city,state and zip" />
                               <Label fx:id="address" layoutX="12.0" layoutY="292.0" text="Address" />
-                              <TableView layoutX="405.0" layoutY="-4.0" prefHeight="607.0" prefWidth="646.0">
-                                <columns>
-                                  <TableColumn prefWidth="75.0" text="Artist" />
-                                  <TableColumn prefWidth="75.0" text="C2" />
-                                </columns>
-                              </TableView>
                               <ImageView fitHeight="150.0" fitWidth="304.0" layoutX="91.0" layoutY="453.0" opacity="0.15" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/lips.jpg" />
@@ -41,6 +35,9 @@
                               </ImageView>
                               <Button fx:id="searchButton" layoutX="175.0" layoutY="121.0" mnemonicParsing="false" onAction="#handleSearchButtonAction" text="Search" />
                               <Button fx:id="saveButton" layoutX="175.0" layoutY="348.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Save" />
+                              <TextField fx:id="searchName" layoutX="71.0" layoutY="82.0" />
+                              <Label layoutX="19.0" layoutY="87.0" text="Name" />
+                              <TextArea fx:id="searchResults" editable="false" layoutX="345.0" layoutY="82.0" mouseTransparent="true" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" prefWidth="200.0" text="Search Results" wrapText="true" />
                            </children>
                         </AnchorPane>
                   </content>

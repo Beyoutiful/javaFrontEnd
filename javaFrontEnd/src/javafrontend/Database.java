@@ -28,6 +28,7 @@ public class Database {
         DB BEYOU_DB;
         BEYOU_DB = mongoClient.getDB("heroku_app33977271");
         boolean auth;
+         System.out.println("password "+FXMLDocumentController.Password().toCharArray());
         auth = BEYOU_DB.authenticate("beyoutiful", FXMLDocumentController.Password().toCharArray());
         DBCollection table = BEYOU_DB.getCollection("clients");
         BasicDBObject searchQuery = new BasicDBObject();
