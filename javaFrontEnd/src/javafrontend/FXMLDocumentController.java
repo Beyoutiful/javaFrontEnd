@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -88,7 +89,11 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextField clientEmailField;
     @FXML
-     protected static Label errorMessage;
+    private TextField searchName;
+    @FXML
+    private TextArea searchResults;
+    @FXML
+    protected static Label errorMessage;
     @FXML
     private TableView mainTable;
     @FXML
@@ -126,7 +131,8 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void handleSearchButtonAction(ActionEvent event) throws IOException {
     //updateCollection();
-     GetName("Brandon");
+     GetName(searchName.getText());
+        //getServices();
     }
 
     @Override
@@ -139,13 +145,10 @@ public class FXMLDocumentController implements Initializable {
 
         DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
         boolean auth = BEYOU_DB.authenticate("beyoutiful", Password().toCharArray());
-        //save example
-        System.out.println("auth: " + auth);
         DBCollection table = BEYOU_DB.getCollection("services");
         BasicDBObject document = new BasicDBObject();
+        
         document.put("name", "Brandon");
-        document.put("price", 65);
-        document.put("description", "new toes");
         document.put("__v", 0);
         table.insert(document);
 
@@ -156,17 +159,19 @@ public class FXMLDocumentController implements Initializable {
         DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
         boolean auth = BEYOU_DB.authenticate("beyoutiful", Password().toCharArray());
         //save example
-        System.out.println("auth: " + auth);
+    
         DBCollection table = BEYOU_DB.getCollection("services");
 
         BasicDBObject searchQuery = new BasicDBObject();
-        searchQuery.put("name", "Manicure");
+        searchQuery.put("name", "Manicures");
 
         DBCursor cursor = table.find(searchQuery);
-
+        //System.out.println(cursor);
+        
         while (cursor.hasNext()) {
-            System.out.println(cursor.next());
+            System.out.println(cursor.next().get("items"));
         }
+      
     }
 
     public void getItems() throws IOException {
@@ -270,15 +275,17 @@ public class FXMLDocumentController implements Initializable {
         searchQuery.put("name", Name);
         DBCursor cursor = table.find(searchQuery);
 
-        String ClientName = searchQuery.getString(Name);
+        String clientName = searchQuery.getString(Name);
         //System.out.println("Looking for: "+Name);// these are to see the name your searching for is being entered
-        //if (ClientName == null){
+        if (clientName == null){
+            System.out.println("clientName = "+clientName);
         //errorMessage.setText(ClientName);
         //System.out.println("Cant locate that name.");
-        // }
+         }
         while (cursor.hasNext()) {
-            System.out.println(cursor.next());
-            // System.out.println("name "+ClientName);
+           // System.out.println(cursor.next());
+             System.out.println(cursor.next().get("name").toString());
+            searchResults.setText(cursor.next().get("name").toString());
 
         }
     }
