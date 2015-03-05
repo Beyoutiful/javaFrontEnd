@@ -45,49 +45,61 @@ import org.json.simple.parser.ParseException;
 /**
  *
  * @author FossRobotics
+ * SEAN TODO: Move the mongoclient stuff into a Class global.
+ * Doesn't need to reconnect in each method.DONE 26 FEB
  */
 public class FXMLDocumentController implements Initializable {
 
+
     @FXML
-    private Label passLabel;
+    protected static Label passLabel;
     @FXML
-    private Label userLabel;
+    protected static Label userLabel;
     @FXML
-    private Label clientName;
+    protected static Label clientName;
     @FXML
-    private Label clientNumber;
+    protected static Label clientNumber;
     @FXML
-    private Label clientAddress;
+    protected static Label clientAddress;
     @FXML
-    private Label clientEmail;
+    protected static Label clientEmail;
     @FXML
+    protected static Button submitButton;
+    @FXML
+
     private Label loginLabel;
     @FXML
     private Button submit;
+
+    protected static Button saveButton;
     @FXML
-    private Button searchButton;
+    protected static Button searchButton;
     @FXML
-    private Button saveButton;
+    protected static Button button;
     @FXML
     private Tab client;
+    protected static Tab admin;
     @FXML
-    private Tab login;
+    protected static Tab login;
+    @FXML
+    protected static Tab schedule;
     @FXML
     private Tab Items;
+
     @FXML
-    private DatePicker datePicker;
+    protected static DatePicker datePicker;
     @FXML
-    private TextField userField;
+    protected static TextField userField;
     @FXML
-    private PasswordField passField;
+    protected static PasswordField passField;
     @FXML
-    private TextField clientNameField;
+    protected static TextField clientNameField;
     @FXML
-    private TextField clientNumberField;
+    protected static TextField clientNumberField;
     @FXML
-    private TextArea clientAddressField;
+    protected static TextArea clientAddressField;
     @FXML
-    private TextField clientEmailField;
+    protected static TextField clientEmailField;
     @FXML
     private TextField searchName;
     @FXML
@@ -95,19 +107,20 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     protected static Label errorMessage;
     @FXML
-    private TableView mainTable;
+    protected static TableView mainTable;
     @FXML
-    private MenuButton menu;
+    protected static MenuButton menu;
+   
     @FXML
-    private ChoiceBox choiceBox;
+    protected static ChoiceBox choiceBox;
     @FXML
-    private Label itemLabel;
+    protected static Label itemLabel;
     @FXML
-    private Label priceLabel;
+    protected static Label priceLabel;
     @FXML
-    private Label descriptionLabel;
+    protected static Label descriptionLabel;
     @FXML
-    private TextField itemID;
+    protected static TextField itemID;
     @FXML
     private TextField itemName;
     @FXML
@@ -119,20 +132,21 @@ public class FXMLDocumentController implements Initializable {
 
     public FXMLDocumentController() throws UnknownHostException {
         mongoClient = new MongoClient("ds035750.mongolab.com", 35750);
-
     }
 
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException, MalformedURLException, ParseException {
         
-        Login();
+        login();
     }
 
     @FXML
     private void handleSearchButtonAction(ActionEvent event) throws IOException {
     //updateCollection();
-     GetName(searchName.getText());
+     getName(searchName.getText());
         //getServices();
+
+
     }
 
     @Override
@@ -140,6 +154,7 @@ public class FXMLDocumentController implements Initializable {
         // TODO
 
     }
+
 
     public void database() throws IOException {
 
@@ -149,9 +164,8 @@ public class FXMLDocumentController implements Initializable {
         BasicDBObject document = new BasicDBObject();
         
         document.put("name", "Brandon");
-        document.put("__v", 0);
-        table.insert(document);
 
+   
     }
 
     public void getServices() throws IOException {
@@ -181,17 +195,22 @@ public class FXMLDocumentController implements Initializable {
         //save example
         DBCollection table = BEYOU_DB.getCollection("items");
 
+
         BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("name", "Manicure");
 
         DBCursor cursor = table.find(searchQuery);
 
         while (cursor.hasNext()) {
-            DBObject item = cursor.next();
-            System.out.println(item.get("_id"));
-            choiceBox.getItems().add(item.get("name"));
+            System.out.println(cursor.next());
         }
     }
-
+    
+    
+    //Item testItem = new Item();
+    //testItem.getItems();
+    //testItem.populateItem();
+    //***Below are the methods I've attempted to replace with the class Item -SEAN***
     public void populateItem() throws IOException {
         DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
         boolean auth = BEYOU_DB.authenticate("beyoutiful", Password().toCharArray());
@@ -266,10 +285,16 @@ public class FXMLDocumentController implements Initializable {
         table.update(query, updateObj);
     }
 
-    public void GetName(String Name) throws IOException {
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-        boolean auth;
-        auth = BEYOU_DB.authenticate("beyoutiful", Password().toCharArray());
+    
+    
+    
+   
+  
+    public void getName(String Name) 
+    {        
+        
+            DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+
         DBCollection table = BEYOU_DB.getCollection("clients");
         BasicDBObject searchQuery = new BasicDBObject();
         searchQuery.put("name", Name);
@@ -290,11 +315,29 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    public void EnterClient() throws IOException {
+    /*public void EnterClient() throws IOException {
 
         DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
         boolean auth = BEYOU_DB.authenticate("beyoutiful", Password().toCharArray());
 
+
+        String ClientName = searchQuery.getString(Name);
+        //System.out.println("Looking for: "+Name);// these are to see the name your searching for is being entered
+        //if (ClientName == null){
+        errorMessage.setText(ClientName);
+        //System.out.println("Cant locate that name.");
+        // }
+        while (cursor.hasNext()) {
+            System.out.println(cursor.next());
+            // System.out.println("name "+ClientName);      
+        }
+    }*/
+
+    //Adds new client (does not update)
+    public void enterClient() 
+    {
+        
+        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
         DBCollection table = BEYOU_DB.getCollection("clients");
         BasicDBObject document = new BasicDBObject();
         document.put("name", clientNameField.getText());
@@ -309,7 +352,8 @@ public class FXMLDocumentController implements Initializable {
         clientAddressField.setText("");
     }
 
-    private void Login() throws MalformedURLException, IOException, ParseException {
+
+    private void login() throws MalformedURLException, IOException, ParseException {
         String url = "http://beyoutifulstudio.herokuapp.com/api/technicians?email="
                 + userField.getText() + "&password=" + passField.getText();
         URL obj = new URL(url);
@@ -319,6 +363,8 @@ public class FXMLDocumentController implements Initializable {
         con.setRequestProperty("Accept", "application/json");
         int responseCode = con.getResponseCode();
         System.out.println("Response code " + responseCode);
+
+        
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         String inputLine;
         StringBuffer response = new StringBuffer();
@@ -337,5 +383,14 @@ public class FXMLDocumentController implements Initializable {
         }
         in.close();
 
+
+        in.close();
+        //print result 
+        System.out.println(response.toString());
+        JSONParser parser = new JSONParser();
+        Object object = parser.parse(response.toString());
+        System.out.println("object " + object);
+        
+       
     }
 }

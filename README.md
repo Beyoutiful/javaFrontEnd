@@ -1,4 +1,5 @@
 # javaFrontEnd
+<<<<<<< HEAD
 Java desktop
 The following links are needed to build and run this application.
 DATABASE
@@ -7,3 +8,6 @@ https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fmongodb%2Fmongo-java-dri
 
 JSON
 https://code.google.com/p/json-simple/downloads/detail?name=json-simple-1.1.1.jar&can=2&q=
+=======
+Java frontend for software engineering senior project
+>>>>>>> 27f2ba2fa4262804c28e1576a75b2d4213a9140f
