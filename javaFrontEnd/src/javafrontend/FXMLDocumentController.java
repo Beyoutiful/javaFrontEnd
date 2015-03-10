@@ -66,11 +66,10 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     protected static Button submitButton;
     @FXML
-
     private Label loginLabel;
     @FXML
     private Button submit;
-
+    @FXML
     protected static Button saveButton;
     @FXML
     protected static Button searchButton;
@@ -85,7 +84,6 @@ public class FXMLDocumentController implements Initializable {
     protected static Tab schedule;
     @FXML
     private Tab Items;
-
     @FXML
     protected static DatePicker datePicker;
     @FXML
@@ -110,7 +108,6 @@ public class FXMLDocumentController implements Initializable {
     protected static TableView mainTable;
     @FXML
     protected static MenuButton menu;
-   
     @FXML
     protected static ChoiceBox choiceBox;
     @FXML
@@ -142,7 +139,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handleSearchButtonAction(ActionEvent event) throws IOException {
-    //updateCollection();
+  //  updateCollection();
      getName(searchName.getText());
         //getServices();
 
@@ -164,8 +161,6 @@ public class FXMLDocumentController implements Initializable {
         BasicDBObject document = new BasicDBObject();
         
         document.put("name", "Brandon");
-
-   
     }
 
     public void getServices() throws IOException {
@@ -205,7 +200,6 @@ public class FXMLDocumentController implements Initializable {
             System.out.println(cursor.next());
         }
     }
-    
     
     //Item testItem = new Item();
     //testItem.getItems();
@@ -285,15 +279,11 @@ public class FXMLDocumentController implements Initializable {
         table.update(query, updateObj);
     }
 
-    
-    
-    
-   
-  
-    public void getName(String Name) 
+    public void getName(String Name) throws IOException 
     {        
-        
+        String password = Password();
             DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+             boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
 
         DBCollection table = BEYOU_DB.getCollection("clients");
         BasicDBObject searchQuery = new BasicDBObject();
@@ -302,19 +292,21 @@ public class FXMLDocumentController implements Initializable {
 
         String clientName = searchQuery.getString(Name);
         //System.out.println("Looking for: "+Name);// these are to see the name your searching for is being entered
-        if (clientName == null){
-            System.out.println("clientName = "+clientName);
         //errorMessage.setText(ClientName);
-        //System.out.println("Cant locate that name.");
-         }
+        if (cursor.hasNext()==false){
+        System.out.println("Cant locate that name.");
+        }else{
         while (cursor.hasNext()) {
-           // System.out.println(cursor.next());
-             System.out.println(cursor.next().get("name").toString());
-            searchResults.setText(cursor.next().get("name").toString());
-
+            DBObject client = cursor.next();
+            //System.out.println(cursor.next());
+            System.out.println(client.get("name").toString());
+            String name=client.get("name").toString();
+            String email=client.get("email").toString();
+            searchResults.setText(name+"\n"+email+"\n");
+//cursor.next().get("name").toString()
         }
     }
-
+    }
     /*public void EnterClient() throws IOException {
 
         DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
