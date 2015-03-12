@@ -6,6 +6,7 @@
 package javafrontend;
 
 import com.mongodb.BasicDBObject;
+import org.bson.types.ObjectId;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -25,6 +26,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,6 +41,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -51,12 +54,11 @@ import org.json.simple.parser.ParseException;
 public class FXMLDocumentController implements Initializable {
 
 
-    @FXML
-    protected static Label passLabel;
-    @FXML
-    protected static Label userLabel;
+    
     @FXML
     protected static Label clientName;
+    @FXML
+    protected Label clientIDLabel;
     @FXML
     protected static Label clientNumber;
     @FXML
@@ -65,8 +67,7 @@ public class FXMLDocumentController implements Initializable {
     protected static Label clientEmail;
     @FXML
     protected static Button submitButton;
-    @FXML
-    private Label loginLabel;
+    
     @FXML
     private Button submit;
     @FXML
@@ -76,30 +77,10 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     protected static Button button;
     @FXML
-    private Tab client;
     protected static Tab admin;
-    @FXML
-    protected static Tab login;
+   
     @FXML
     protected static Tab schedule;
-    @FXML
-    private Tab Items;
-    @FXML
-    protected static DatePicker datePicker;
-    @FXML
-    protected static TextField userField;
-    @FXML
-    protected static PasswordField passField;
-    @FXML
-    protected static TextField clientNameField;
-    @FXML
-    protected static TextField clientNumberField;
-    @FXML
-    protected static TextArea clientAddressField;
-    @FXML
-    protected static TextField clientEmailField;
-    @FXML
-    private TextField searchName;
     @FXML
     private TextArea searchResults;
     @FXML
@@ -110,12 +91,51 @@ public class FXMLDocumentController implements Initializable {
     protected static MenuButton menu;
     @FXML
     protected static ChoiceBox choiceBox;
+   /*
+    *   Login
+    */
     @FXML
-    protected static Label itemLabel;
+    protected static Tab login;
     @FXML
-    protected static Label priceLabel;
+    protected static TextField userField;
     @FXML
-    protected static Label descriptionLabel;
+    protected static PasswordField passField;
+    @FXML
+    private Label loginLabel;
+    @FXML
+    protected static Label passLabel;
+    @FXML
+    protected static Label userLabel;
+   /*
+    *   Clients
+    */
+    @FXML
+    private Tab client;
+    @FXML
+    protected TextField clientNameField;
+    @FXML
+    protected TextField clientNumberField;
+    @FXML
+    protected TextField clientAddressField;
+    @FXML
+    protected TextField clientEmailField;
+    @FXML
+    protected TextField streetNumberField;
+    @FXML
+    protected TextField cityField;
+    @FXML
+    protected TextField stateField;
+    @FXML
+    protected TextField zipcodeField;
+    @FXML
+    private TextField searchName;
+    @FXML
+    protected Button createNewClient;
+    /*
+     *   Items
+     */
+    @FXML
+    private Tab Items;
     @FXML
     protected static TextField itemID;
     @FXML
@@ -123,7 +143,34 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextField itemPrice;
     @FXML
-    private TextArea itemDescription;
+    private TextArea itemDescription; 
+    @FXML
+    protected static Label itemLabel;
+    @FXML
+    protected static Label priceLabel;
+    @FXML
+    protected static Label descriptionLabel;
+    /*
+     *   Tech
+     */
+    @FXML
+    protected Tab techTab;
+    @FXML
+    protected TextField techName;
+    @FXML
+    protected TextField techPhone;
+    @FXML
+    protected TextField techEmail;
+    @FXML
+    protected TextField techStreet;
+    @FXML
+    protected TextField techCity;
+    @FXML
+    protected TextField techState;
+    @FXML
+    protected TextField techZipcode;
+    @FXML
+    protected ImageView techImageBox;
 
     private final MongoClient mongoClient;
 
@@ -139,20 +186,23 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handleSearchButtonAction(ActionEvent event) throws IOException {
-  //  updateCollection();
-     getName(searchName.getText());
-        //getServices();
-
-
+     searchUpdateClient(searchName.getText());
+     
     }
-
+    @FXML
+    private void handleSaveButtonAction(ActionEvent event) throws IOException {
+        updateClient();
+    }
+    @FXML
+    private void handleNewClientButton(ActionEvent event){
+        newClient();
+        createNewClient.setVisible(false);
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-
     }
-
-
+    
     public void database() throws IOException {
 
         DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
@@ -217,6 +267,7 @@ public class FXMLDocumentController implements Initializable {
             itemName.setText((String) item.get("name"));
             itemPrice.setText((String) item.get("price"));
             itemDescription.setText((String) item.get("description"));
+            
         }
     }
     protected static String Password() throws FileNotFoundException, IOException{
@@ -259,27 +310,9 @@ public class FXMLDocumentController implements Initializable {
         return password;
       
     }
-    public void updateCollection() throws IOException {
-        String password = Password();
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-        boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
-
-        System.out.println("auth: " + auth);
-        DBCollection table = BEYOU_DB.getCollection("services");
-
-        BasicDBObject query = new BasicDBObject();
-        query.put("name", "Manicure-updated");
-
-        BasicDBObject newDocument = new BasicDBObject();
-        newDocument.put("name", "Manicure");
-
-        BasicDBObject updateObj = new BasicDBObject();
-        updateObj.put("$set", newDocument);
-
-        table.update(query, updateObj);
-    }
-
-    public void getName(String Name) throws IOException 
+    
+    
+    public void searchUpdateClient(String Name) throws IOException 
     {        
         String password = Password();
             DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
@@ -291,42 +324,69 @@ public class FXMLDocumentController implements Initializable {
         DBCursor cursor = table.find(searchQuery);
 
         String clientName = searchQuery.getString(Name);
-        //System.out.println("Looking for: "+Name);// these are to see the name your searching for is being entered
-        //errorMessage.setText(ClientName);
-        if (cursor.hasNext()==false){
-        System.out.println("Cant locate that name.");
-        }else{
-        while (cursor.hasNext()) {
+        
+        if (cursor.hasNext()==true){
+            while (cursor.hasNext()) {
             DBObject client = cursor.next();
-            //System.out.println(cursor.next());
-            System.out.println(client.get("name").toString());
-            String name=client.get("name").toString();
-            String email=client.get("email").toString();
-            searchResults.setText(name+"\n"+email+"\n");
-//cursor.next().get("name").toString()
-        }
+            System.out.println(client);
+            Object ID = client.get("_id");
+            clientIDLabel.setText(ID.toString());
+            clientNameField.setText(client.get("name").toString());
+            clientEmailField.setText(client.get("email").toString());
+            clientNumberField.setText(client.get("phone").toString());
+            streetNumberField.setText(client.get("address").toString());
+            cityField.setText(client.get("city").toString());
+            stateField.setText(client.get("state").toString());
+            zipcodeField.setText(client.get("zip").toString());
+            }
+        }else{
+         System.out.println("Cant locate that name.");
+         clientNameField.setText("");
+         clientEmailField.setText("");
+         clientNumberField.setText("");
+         streetNumberField.setText("");
+         cityField.setText("");
+         stateField.setText("");
+         zipcodeField.setText("");
+         createNewClient.setVisible(true);
+         
     }
     }
-    /*public void EnterClient() throws IOException {
-
+  // This function is working as it should
+    public void updateClient() throws IOException {
+        String password = Password();
         DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-        boolean auth = BEYOU_DB.authenticate("beyoutiful", Password().toCharArray());
+        boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
 
+        DBCollection table = BEYOU_DB.getCollection("clients");
+        
+        BasicDBObject query = new BasicDBObject();
+        System.out.println(clientIDLabel.getText());
+        query.put("_id", new ObjectId(clientIDLabel.getText()));
+        BasicDBObject newDocument = new BasicDBObject();
+        newDocument.put("name", clientNameField.getText());
+        newDocument.put("phone", clientNumberField.getText());
+        newDocument.put("email", clientEmailField.getText());
+        newDocument.put("address", streetNumberField.getText());
+        newDocument.put("city", cityField.getText());
+        newDocument.put("state", stateField.getText());
+        newDocument.put("zip", zipcodeField.getText());
+        
+        BasicDBObject updateObj = new BasicDBObject();
+        updateObj.put("$set", newDocument);
 
-        String ClientName = searchQuery.getString(Name);
-        //System.out.println("Looking for: "+Name);// these are to see the name your searching for is being entered
-        //if (ClientName == null){
-        errorMessage.setText(ClientName);
-        //System.out.println("Cant locate that name.");
-        // }
-        while (cursor.hasNext()) {
-            System.out.println(cursor.next());
-            // System.out.println("name "+ClientName);      
-        }
-    }*/
+        table.update(query, updateObj);
+        clientNameField.setText("");
+        clientEmailField.setText("");
+        clientNumberField.setText("");
+        streetNumberField.setText("");
+        cityField.setText("");
+        stateField.setText("");
+        zipcodeField.setText("");
+    }
 
     //Adds new client (does not update)
-    public void enterClient() 
+    public void newClient() 
     {
         
         DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
@@ -335,13 +395,19 @@ public class FXMLDocumentController implements Initializable {
         document.put("name", clientNameField.getText());
         document.put("phone", clientNumberField.getText());
         document.put("email", clientEmailField.getText());
-        document.put("address", clientAddressField.getText());
+        document.put("address", streetNumberField.getText());
+        document.put("city", cityField.getText());
+        document.put("state", stateField.getText());
+        document.put("zip", zipcodeField.getText());
         document.put("__v", 0);
         table.insert(document);
         clientNameField.setText("");
-        clientNumberField.setText("");
         clientEmailField.setText("");
-        clientAddressField.setText("");
+        clientNumberField.setText("");
+        streetNumberField.setText("");
+        cityField.setText("");
+        stateField.setText("");
+        zipcodeField.setText("");
     }
 
 

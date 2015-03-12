@@ -14,19 +14,23 @@
    <children>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="809.0" prefWidth="1091.0">
          <children>
+            <ImageView fx:id="logo" fitHeight="95.0" fitWidth="1280.0" layoutX="1.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/logo.png" />
+               </image>
+            </ImageView>
             <TabPane layoutY="94.0" prefHeight="681.0" prefWidth="1089.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
                 <Tab fx:id="client" closable="false" text="Client">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TextField layoutX="71.0" layoutY="193.0" promptText="name" />
-                              <TextField layoutX="71.0" layoutY="218.0" promptText="phone" />
-                              <TextField layoutX="71.0" layoutY="243.0" promptText="email" />
+                              <TextField fx:id="clientNameField" layoutX="71.0" layoutY="193.0" promptText="name" />
+                              <TextField fx:id="clientNumberField" layoutX="71.0" layoutY="218.0" promptText="phone" />
+                              <TextField fx:id="clientEmailField" layoutX="71.0" layoutY="243.0" promptText="email" />
                               <Label fx:id="name" layoutX="20.0" layoutY="197.0" text="Name" />
                               <Label fx:id="phoneNumber" layoutX="18.0" layoutY="223.0" text="Phone" />
                               <Label fx:id="email" layoutX="21.0" layoutY="248.0" text="Email" />
-                              <TextArea fx:id="addressField" layoutX="71.0" layoutY="268.0" prefHeight="63.0" prefWidth="163.0" promptText="number,city,state and zip" />
                               <Label fx:id="address" layoutX="12.0" layoutY="292.0" text="Address" />
                               <ImageView fitHeight="150.0" fitWidth="304.0" layoutX="91.0" layoutY="453.0" opacity="0.15" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -34,10 +38,26 @@
                                  </image>
                               </ImageView>
                               <Button fx:id="searchButton" layoutX="175.0" layoutY="121.0" mnemonicParsing="false" onAction="#handleSearchButtonAction" text="Search" />
-                              <Button fx:id="saveButton" layoutX="175.0" layoutY="348.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Save" />
-                              <TextField fx:id="searchName" layoutX="71.0" layoutY="82.0" />
+                              <Button fx:id="saveButton" layoutX="175.0" layoutY="387.0" mnemonicParsing="false" onAction="#handleSaveButtonAction" text="Save" />
+                              <TextField fx:id="searchName" layoutX="71.0" layoutY="82.0" promptText="Search" />
                               <Label layoutX="19.0" layoutY="87.0" text="Name" />
-                              <TextArea fx:id="searchResults" editable="false" layoutX="345.0" layoutY="82.0" mouseTransparent="true" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" prefWidth="200.0" text="Search Results" wrapText="true" />
+                              <Label fx:id="clientIDLabel" layoutX="18.0" layoutY="158.0" prefHeight="32.0" prefWidth="282.0" visible="false" />
+                              <TextField fx:id="streetNumberField" layoutX="71.0" layoutY="279.0" promptText="House/Street" />
+                              <TextField fx:id="cityField" layoutX="71.0" layoutY="305.0" prefHeight="26.0" prefWidth="161.0" promptText="City" />
+                              <TextField fx:id="stateField" layoutX="71.0" layoutY="331.0" promptText="State" />
+                              <TextField fx:id="zipcodeField" layoutX="70.0" layoutY="357.0" promptText="Zipcode" />
+                              <Label alignment="TOP_LEFT" contentDisplay="TEXT_ONLY" layoutX="363.0" layoutY="87.0" prefHeight="120.0" prefWidth="271.0" text="To search for a Client, enter their name in the search box.  If the Client is in the database their information will be pre poulated for you in the Client Information section.  You may edit or change the Clients information here." wrapText="true" />
+                              <Label contentDisplay="CENTER" layoutX="74.0" layoutY="156.0" prefHeight="34.0" prefWidth="159.0" text="Client Information" textAlignment="CENTER" underline="true" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold Italic" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="73.0" layoutY="44.0" prefHeight="31.0" prefWidth="158.0" text="Enter Clients Name" textAlignment="CENTER" textOverrun="CLIP" underline="true">
+                                 <font>
+                                    <Font name="System Bold Italic" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="createNewClient" layoutX="73.0" layoutY="387.0" mnemonicParsing="false" onAction="#handleNewClientButton" prefHeight="26.0" prefWidth="158.0" text="Create New Client" visible="false" />
                            </children>
                         </AnchorPane>
                   </content>
@@ -71,13 +91,54 @@
                         </AnchorPane>
                     </content>
                   </Tab>
+                  <Tab fx:id="servicesTab" text="Services">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="36.0" layoutY="51.0" text="Choose one to edit/add." />
+                              <CheckBox fx:id="manicureCheckbox" layoutX="36.0" layoutY="84.0" mnemonicParsing="false" text="Manicures" />
+                              <CheckBox fx:id="nailsCheckbox" layoutX="36.0" layoutY="110.0" mnemonicParsing="false" text="Nails" />
+                              <CheckBox fx:id="pedicureCheckbox" layoutX="36.0" layoutY="136.0" mnemonicParsing="false" text="Pedicures" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+                  <Tab fx:id="techTab" text="Nail Tech">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <ImageView blendMode="DARKEN" fitHeight="751.0" fitWidth="1089.0" focusTraversable="true" opacity="0.2" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/4483758f5b1c753c832f517d21c0c3631f42d71.jpg" />
+                                 </image>
+                                 <effect>
+                                    <MotionBlur />
+                                 </effect>
+                                 <cursor>
+                                    <Cursor fx:constant="SE_RESIZE" />
+                                 </cursor>
+                              </ImageView>
+                              <ImageView fx:id="techImageBox" fitHeight="271.0" fitWidth="200.0" layoutX="395.0" layoutY="56.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                                 <effect>
+                                    <ImageInput />
+                                 </effect>
+                              </ImageView>
+                              <TextField fx:id="techName" layoutX="70.0" layoutY="56.0" promptText="Name" />
+                              <TextField fx:id="techPhone" layoutX="70.0" layoutY="127.0" promptText="Phone" />
+                              <TextField fx:id="techEmail" layoutX="70.0" layoutY="153.0" promptText="Email" />
+                              <TextField fx:id="techStreet" layoutX="70.0" layoutY="195.0" promptText="Number/Street" />
+                              <TextField fx:id="techCity" layoutX="70.0" layoutY="221.0" promptText="City" />
+                              <TextField fx:id="techState" layoutX="70.0" layoutY="247.0" promptText="State" />
+                              <TextField fx:id="techZip" layoutX="70.0" layoutY="273.0" promptText="Zipcode" />
+                              <Button fx:id="techSearchButton" layoutX="70.0" layoutY="306.0" mnemonicParsing="false" text="Search" />
+                              <Button fx:id="techEditButton" layoutX="172.0" layoutY="306.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="61.0" text="Save" />
+                              <Label layoutX="70.0" layoutY="29.0" prefHeight="16.0" prefWidth="160.0" text="id number" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
               </tabs>
             </TabPane>
-            <ImageView fx:id="logo" fitHeight="95.0" fitWidth="1280.0" layoutX="1.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/logo.png" />
-               </image>
-            </ImageView>
          </children>
       </AnchorPane>
    </children>
