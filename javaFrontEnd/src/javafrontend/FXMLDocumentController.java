@@ -28,6 +28,7 @@ import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.ResourceBundle;
+import java.util.Set;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -41,7 +42,9 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.ImageViewBuilder;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -170,6 +173,12 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     protected TextField techZipcode;
     @FXML
+    protected TextField techTitle;
+    @FXML
+    protected TextField techImageURL;
+    @FXML
+    protected TextArea techDescription;
+    @FXML
     protected ImageView techImageBox;
 
     private final MongoClient mongoClient;
@@ -188,6 +197,7 @@ public class FXMLDocumentController implements Initializable {
     private void handleSearchButtonAction(ActionEvent event) throws IOException {
      searchUpdateClient(searchName.getText());
      
+     
     }
     @FXML
     private void handleSaveButtonAction(ActionEvent event) throws IOException {
@@ -197,6 +207,11 @@ public class FXMLDocumentController implements Initializable {
     private void handleNewClientButton(ActionEvent event){
         newClient();
         createNewClient.setVisible(false);
+    }
+     @FXML
+    private void handleTechSearchButtonAction(ActionEvent event) throws IOException {
+     searchTech(techName.getText());
+     
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -311,7 +326,70 @@ public class FXMLDocumentController implements Initializable {
       
     }
     
-    
+    public void searchTech(String Name) throws IOException{
+       {        
+        String password = Password();
+            DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+             boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
+
+        DBCollection table = BEYOU_DB.getCollection("technicians");
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("name", Name);
+        DBCursor cursor = table.find(searchQuery);
+
+        String technicianName = searchQuery.getString(Name);
+        
+        if (cursor.hasNext()==true){
+            while (cursor.hasNext()) {
+            DBObject technicians = cursor.next();
+            System.out.println(technicians);
+            Object ID = technicians.get("_id");
+           // clientIDLabel.setText(ID.toString());
+                System.out.println(""+ID);
+            techName.setText(technicians.get("name").toString());
+            techEmail.setText(technicians.get("email").toString());
+            techPhone.setText(technicians.get("phone").toString());
+            techStreet.setText(technicians.get("address").toString());
+            techCity.setText(technicians.get("city").toString());
+            techState.setText(technicians.get("state").toString());
+            techZipcode.setText(technicians.get("zip").toString());
+            techTitle.setText(technicians.get("title").toString());
+            techImageURL.setText(technicians.get("image").toString());
+            techDescription.setText(technicians.get("description").toString());
+                
+               Image image = new Image("http://beyoutifulstudio.herokuapp.com/"+technicians.get("image"));
+            techImageBox.setImage(image);
+                
+            }
+        }else{
+         System.out.println("Cant locate that name.");
+         clientNameField.setText("");
+         clientEmailField.setText("");
+         clientNumberField.setText("");
+         streetNumberField.setText("");
+         cityField.setText("");
+         stateField.setText("");
+         zipcodeField.setText("");
+         createNewClient.setVisible(true);
+         
+    }
+    }
+           /* DBObject technicians = cursor.next();
+            techName.setText((String) technicians.get("name"));
+            techEmail.setText((String)technicians.get("email"));
+            techPhone.setText((String)technicians.get("phone"));
+            techStreet.setText((String)technicians.get("address"));
+            techCity.setText((String) technicians.get("city"));
+            techState.setText((String) technicians.get("state"));
+            techZipcode.setText((String) technicians.get("zip"));
+        }*/
+    }
+    public void createTech(){
+        
+    }
+    public void deleteTech(){
+        
+    }
     public void searchUpdateClient(String Name) throws IOException 
     {        
         String password = Password();
@@ -338,6 +416,7 @@ public class FXMLDocumentController implements Initializable {
             cityField.setText(client.get("city").toString());
             stateField.setText(client.get("state").toString());
             zipcodeField.setText(client.get("zip").toString());
+            createNewClient.setVisible(false);
             }
         }else{
          System.out.println("Cant locate that name.");
