@@ -29,6 +29,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -36,6 +38,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Tab;
@@ -45,6 +48,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.ImageViewBuilder;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -135,6 +141,22 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     protected Button createNewClient;
     /*
+    *   Services
+    */
+    @FXML
+    protected Button serviceManicure;
+    @FXML
+    protected Button servicePedicure;
+    @FXML
+    protected Button serviceNails;
+    @FXML 
+    protected ListView maniView;
+    @FXML 
+    protected ListView pediView;
+    @FXML 
+    protected ListView nailView;
+    
+    /*
      *   Items
      */
     @FXML
@@ -153,9 +175,14 @@ public class FXMLDocumentController implements Initializable {
     protected static Label priceLabel;
     @FXML
     protected static Label descriptionLabel;
+    @FXML
+    protected ObservableList data;
+  
     /*
      *   Tech
      */
+    @FXML
+    protected Label techID;
     @FXML
     protected Tab techTab;
     @FXML
@@ -180,6 +207,10 @@ public class FXMLDocumentController implements Initializable {
     protected TextArea techDescription;
     @FXML
     protected ImageView techImageBox;
+    @FXML
+    protected Button createProfileButton;
+    @FXML
+    protected Button deleteProfileButton;
 
     private final MongoClient mongoClient;
 
@@ -248,24 +279,102 @@ public class FXMLDocumentController implements Initializable {
       
     }
 
-    public void getItems() throws IOException {
+    public void getMani() throws IOException, ParseException, JSONException {
 
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-        boolean auth = BEYOU_DB.authenticate("beyoutiful", Password().toCharArray());
-        //save example
-        DBCollection table = BEYOU_DB.getCollection("items");
+        String url = "http://beyoutifulstudio.herokuapp.com/api/services/54ebc49353a2c2d504ac5909";
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestProperty("Authorization", apiPassword());
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setRequestProperty("Accept", "application/json");
+        
 
-
-        BasicDBObject searchQuery = new BasicDBObject();
-        searchQuery.put("name", "Manicure");
-
-        DBCursor cursor = table.find(searchQuery);
-
-        while (cursor.hasNext()) {
-            System.out.println(cursor.next());
+        
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
         }
-    }
+        JSONObject manicure;
+        manicure =  new JSONObject(response.toString());
+        //System.out.println(manicure);
+        JSONArray items;
+        data = FXCollections.observableArrayList();
+        items = manicure.getJSONArray("items");
+        for(int i = 0; i < items.length();i++){
+            JSONObject item = items.getJSONObject(i);
+            data.add(i,item.get("name"));
+            maniView.setItems(data);
+        }
+        
+        in.close();
     
+    }
+    public void getPedi() throws IOException, ParseException, JSONException {
+
+        String url = "http://beyoutifulstudio.herokuapp.com/api/services/54ebc49653a2c2d504ac590a";
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestProperty("Authorization", apiPassword());
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setRequestProperty("Accept", "application/json");
+        
+
+        
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        JSONObject pedicure;
+        pedicure =  new JSONObject(response.toString());
+        //System.out.println(manicure);
+        JSONArray items;
+        data = FXCollections.observableArrayList();
+        items = pedicure.getJSONArray("items");
+        for(int i = 0; i < items.length();i++){
+            JSONObject item = items.getJSONObject(i);
+            data.add(i,item.get("name"));
+            pediView.setItems(data);
+        }
+        
+        in.close();
+    
+    }
+    public void getNails() throws IOException, ParseException, JSONException {
+
+        String url = "http://beyoutifulstudio.herokuapp.com/api/services/54ebc48f53a2c2d504ac5908";
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestProperty("Authorization", apiPassword());
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setRequestProperty("Accept", "application/json");
+        
+
+        
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        JSONObject nails;
+        nails =  new JSONObject(response.toString());
+        //System.out.println(manicure);
+        JSONArray items;
+        data = FXCollections.observableArrayList();
+        items = nails.getJSONArray("items");
+        for(int i = 0; i < items.length();i++){
+            JSONObject item = items.getJSONObject(i);
+            data.add(i,item.get("name"));
+            nailView.setItems(data);
+        }
+        
+        in.close();
+    
+    }
     //Item testItem = new Item();
     //testItem.getItems();
     //testItem.populateItem();
@@ -325,7 +434,45 @@ public class FXMLDocumentController implements Initializable {
         return password;
       
     }
-    
+    public void deleteProfile() throws IOException{
+          String password = Password();
+        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
+        DBCollection table = BEYOU_DB.getCollection("profiles");
+        String ID = techID.getText();
+        BasicDBObject searchQuery = new BasicDBObject();
+       Object proID = null;
+        searchQuery.put("technician", new ObjectId(ID)); 
+        DBCursor cursor = table.find(searchQuery);
+        System.out.println(cursor.hasNext());
+        if (cursor.hasNext()==true){
+            while (cursor.hasNext()) {
+            DBObject profiles = cursor.next();
+          
+            proID = profiles.get("_id");
+               
+       // String profileID= cursor.toString();
+        
+            }
+            
+        }
+       BasicDBObject deleteQuery = new BasicDBObject();
+       deleteQuery.put("_id", new ObjectId(proID.toString()));
+       table.remove(deleteQuery);
+    }
+    public void createProfile() throws IOException{
+         String password = Password();
+        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
+        DBCollection table = BEYOU_DB.getCollection("profiles");
+        String ID = techID.getText();
+        BasicDBObject document = new BasicDBObject();
+        
+        document.put("technician", new ObjectId(ID));
+       
+        document.put("__v", 0);
+        table.insert(document);
+    }
     public void searchTech(String Name) throws IOException{
        {        
         String password = Password();
@@ -342,10 +489,9 @@ public class FXMLDocumentController implements Initializable {
         if (cursor.hasNext()==true){
             while (cursor.hasNext()) {
             DBObject technicians = cursor.next();
-            System.out.println(technicians);
+          
             Object ID = technicians.get("_id");
-           // clientIDLabel.setText(ID.toString());
-                System.out.println(""+ID);
+            techID.setText(ID.toString());
             techName.setText(technicians.get("name").toString());
             techEmail.setText(technicians.get("email").toString());
             techPhone.setText(technicians.get("phone").toString());
@@ -356,6 +502,7 @@ public class FXMLDocumentController implements Initializable {
             techTitle.setText(technicians.get("title").toString());
             techImageURL.setText(technicians.get("image").toString());
             techDescription.setText(technicians.get("description").toString());
+            
                 
                Image image = new Image("http://beyoutifulstudio.herokuapp.com/"+technicians.get("image"));
             techImageBox.setImage(image);
@@ -374,21 +521,12 @@ public class FXMLDocumentController implements Initializable {
          
     }
     }
-           /* DBObject technicians = cursor.next();
-            techName.setText((String) technicians.get("name"));
-            techEmail.setText((String)technicians.get("email"));
-            techPhone.setText((String)technicians.get("phone"));
-            techStreet.setText((String)technicians.get("address"));
-            techCity.setText((String) technicians.get("city"));
-            techState.setText((String) technicians.get("state"));
-            techZipcode.setText((String) technicians.get("zip"));
-        }*/
     }
-    public void createTech(){
+    public void createTech() throws IOException{
         
     }
     public void deleteTech(){
-        
+       
     }
     public void searchUpdateClient(String Name) throws IOException 
     {        

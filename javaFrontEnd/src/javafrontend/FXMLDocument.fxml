@@ -67,11 +67,6 @@
                         </AnchorPane>
                   </content>
                 </Tab>
-                <Tab fx:id="Items" disable="true" text="Items">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                  </content>
-                </Tab>
                   <Tab fx:id="LoginTab" text="Login">
                     <content>
                       <AnchorPane>
@@ -105,10 +100,12 @@
                                     <Image url="@../images/44837925102d6f86ccf73a0e97096afaa3c80e0.jpg" />
                                  </image>
                               </ImageView>
-                              <Label layoutX="36.0" layoutY="51.0" text="Choose one to edit/add." />
-                              <CheckBox fx:id="manicureCheckbox" layoutX="36.0" layoutY="84.0" mnemonicParsing="false" text="Manicures" />
-                              <CheckBox fx:id="nailsCheckbox" layoutX="36.0" layoutY="110.0" mnemonicParsing="false" text="Nails" />
-                              <CheckBox fx:id="pedicureCheckbox" layoutX="36.0" layoutY="136.0" mnemonicParsing="false" text="Pedicures" />
+                              <ListView fx:id="maniView" layoutX="36.0" layoutY="40.0" prefHeight="139.0" prefWidth="523.0" />
+                              <Button fx:id="serviceManicure" layoutX="34.0" layoutY="14.0" mnemonicParsing="false" onAction="#getMani" text="Manicure" />
+                              <Button fx:id="servicePedicure" layoutX="35.0" layoutY="191.0" mnemonicParsing="false" onAction="#getPedi" text="Pedicure" />
+                              <Button fx:id="serviceNails" layoutX="36.0" layoutY="392.0" mnemonicParsing="false" onAction="#getNails" text="Nails" />
+                              <ListView fx:id="pediView" layoutX="36.0" layoutY="217.0" prefHeight="161.0" prefWidth="522.0" />
+                              <ListView fx:id="nailView" layoutX="37.0" layoutY="425.0" prefHeight="151.0" prefWidth="521.0" />
                            </children>
                         </AnchorPane>
                     </content>
@@ -139,7 +136,7 @@
                               <TextField fx:id="techZipcode" layoutX="70.0" layoutY="273.0" promptText="Zipcode" />
                               <Button fx:id="techSearchButton" layoutX="173.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleTechSearchButtonAction" text="Search" />
                               <Button fx:id="techEditButton" layoutX="70.0" layoutY="90.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="61.0" text="Save" />
-                              <Label layoutX="70.0" layoutY="29.0" prefHeight="16.0" prefWidth="160.0" text="id number" />
+                              <Label fx:id="techID" layoutX="70.0" layoutY="29.0" prefHeight="16.0" prefWidth="160.0" text="id number" />
                               <ImageView fx:id="techImageBox" fitHeight="613.0" fitWidth="526.0" layoutX="345.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" />
                               <Label layoutX="21.0" layoutY="61.0" text="Name" />
                               <Label layoutX="21.0" layoutY="132.0" text="Phone" />
@@ -166,11 +163,16 @@
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Button layoutX="934.0" layoutY="526.0" mnemonicParsing="false" text="Delete Profile" />
-                              <Button layoutX="831.0" layoutY="526.0" mnemonicParsing="false" text="Create Profile" />
+                              <Button fx:id="deleteProfileButton" layoutX="934.0" layoutY="526.0" mnemonicParsing="false" onAction="#deleteProfile" text="Delete Profile" />
+                              <Button fx:id="createProfileButton" layoutX="831.0" layoutY="526.0" mnemonicParsing="false" onAction="#createProfile" text="Create Profile" />
                               <TextField layoutX="832.0" layoutY="560.0" prefHeight="26.0" prefWidth="198.0" promptText="Image URL" />
                            </children>
                         </AnchorPane>
+                    </content>
+                  </Tab>
+                  <Tab text="Appointments">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                     </content>
                   </Tab>
               </tabs>
