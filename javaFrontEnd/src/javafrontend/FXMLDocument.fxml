@@ -101,9 +101,9 @@
                                  </image>
                               </ImageView>
                               <ListView fx:id="maniView" layoutX="36.0" layoutY="40.0" prefHeight="139.0" prefWidth="523.0" />
-                              <Button fx:id="serviceManicure" layoutX="34.0" layoutY="14.0" mnemonicParsing="false" onAction="#getMani" text="Manicure" />
-                              <Button fx:id="servicePedicure" layoutX="35.0" layoutY="191.0" mnemonicParsing="false" onAction="#getPedi" text="Pedicure" />
-                              <Button fx:id="serviceNails" layoutX="36.0" layoutY="392.0" mnemonicParsing="false" onAction="#getNails" text="Nails" />
+                              <Button fx:id="serviceManicure" layoutX="34.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleManiButton" text="Manicure" />
+                              <Button fx:id="servicePedicure" layoutX="35.0" layoutY="191.0" mnemonicParsing="false" onAction="#handlePediButton" text="Pedicure" />
+                              <Button fx:id="serviceNails" layoutX="36.0" layoutY="392.0" mnemonicParsing="false" onAction="#handleNailsButton" text="Nails" />
                               <ListView fx:id="pediView" layoutX="36.0" layoutY="217.0" prefHeight="161.0" prefWidth="522.0" />
                               <ListView fx:id="nailView" layoutX="37.0" layoutY="425.0" prefHeight="151.0" prefWidth="521.0" />
                            </children>
@@ -163,8 +163,8 @@
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="deleteProfileButton" layoutX="934.0" layoutY="526.0" mnemonicParsing="false" onAction="#deleteProfile" text="Delete Profile" />
-                              <Button fx:id="createProfileButton" layoutX="831.0" layoutY="526.0" mnemonicParsing="false" onAction="#createProfile" text="Create Profile" />
+                              <Button fx:id="deleteProfileButton" layoutX="934.0" layoutY="526.0" mnemonicParsing="false" onAction="#handleDeleteProfileButton" text="Delete Profile" />
+                              <Button fx:id="createProfileButton" layoutX="831.0" layoutY="526.0" mnemonicParsing="false" onAction="#handleCreateProfileButton" text="Create Profile" />
                               <TextField layoutX="832.0" layoutY="560.0" prefHeight="26.0" prefWidth="198.0" promptText="Image URL" />
                            </children>
                         </AnchorPane>

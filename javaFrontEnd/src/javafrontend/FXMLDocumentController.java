@@ -13,22 +13,16 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
-import java.util.HashSet;
 import java.util.ResourceBundle;
-import java.util.Set;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,7 +30,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
@@ -47,7 +40,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.ImageViewBuilder;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,13 +48,12 @@ import org.json.simple.parser.ParseException;
 
 /**
  *
- * @author FossRobotics
- * SEAN TODO: Move the mongoclient stuff into a Class global.
- * Doesn't need to reconnect in each method.DONE 26 FEB
+ * @author Brandon Foss
+ * 
  */
 public class FXMLDocumentController implements Initializable {
-
-
+    items testItem = new items();
+    Technicians technicians = new Technicians();
     
     @FXML
     protected static Label clientName;
@@ -106,9 +97,9 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     protected static Tab login;
     @FXML
-    protected static TextField userField;
+    protected TextField userField;
     @FXML
-    protected static PasswordField passField;
+    protected PasswordField passField;
     @FXML
     private Label loginLabel;
     @FXML
@@ -150,7 +141,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     protected Button serviceNails;
     @FXML 
-    protected ListView maniView;
+    public ListView maniView;
     @FXML 
     protected ListView pediView;
     @FXML 
@@ -162,7 +153,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Tab Items;
     @FXML
-    protected static TextField itemID;
+    protected TextField itemID;
     @FXML
     private TextField itemName;
     @FXML
@@ -240,160 +231,37 @@ public class FXMLDocumentController implements Initializable {
         createNewClient.setVisible(false);
     }
      @FXML
+    private void handleManiButton(ActionEvent event) throws IOException, ParseException, JSONException{
+        testItem.getMani(maniView);
+    }
+      @FXML
+    private void handlePediButton(ActionEvent event) throws IOException, ParseException, JSONException{
+        testItem.getPedi(pediView);
+    }
+      @FXML
+    private void handleNailsButton(ActionEvent event) throws IOException, ParseException, JSONException{
+        testItem.getNails(nailView);
+    }
+     @FXML
     private void handleTechSearchButtonAction(ActionEvent event) throws IOException {
-     searchTech(techName.getText());
-     
+    String name = new String();
+     technicians.searchTech(techID,techName,techPhone,techEmail,techStreet,techCity,techState,
+             techZipcode,techTitle,techImageURL,techDescription,techImageBox,createProfileButton,
+             deleteProfileButton);
+    }
+      @FXML
+    private void handleCreateProfileButton(ActionEvent event) throws IOException, ParseException, JSONException{
+        technicians.createProfile(techID);
+    }
+     @FXML
+    private void handleDeleteProfileButton(ActionEvent event) throws IOException, ParseException, JSONException{
+        technicians.deleteProfile(techID);
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }
-    
-    public void database() throws IOException {
 
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-        boolean auth = BEYOU_DB.authenticate("beyoutiful", Password().toCharArray());
-        DBCollection table = BEYOU_DB.getCollection("services");
-        BasicDBObject document = new BasicDBObject();
-        
-        document.put("name", "Brandon");
-    }
-
-    public void getServices() throws IOException {
-
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-        boolean auth = BEYOU_DB.authenticate("beyoutiful", Password().toCharArray());
-        //save example
-    
-        DBCollection table = BEYOU_DB.getCollection("services");
-
-        BasicDBObject searchQuery = new BasicDBObject();
-        searchQuery.put("name", "Manicures");
-
-        DBCursor cursor = table.find(searchQuery);
-        //System.out.println(cursor);
-        
-        while (cursor.hasNext()) {
-            System.out.println(cursor.next().get("items"));
-        }
-      
-    }
-
-    public void getMani() throws IOException, ParseException, JSONException {
-
-        String url = "http://beyoutifulstudio.herokuapp.com/api/services/54ebc49353a2c2d504ac5909";
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        con.setRequestProperty("Authorization", apiPassword());
-        con.setRequestProperty("Content-Type", "application/json");
-        con.setRequestProperty("Accept", "application/json");
-        
-
-        
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        JSONObject manicure;
-        manicure =  new JSONObject(response.toString());
-        //System.out.println(manicure);
-        JSONArray items;
-        data = FXCollections.observableArrayList();
-        items = manicure.getJSONArray("items");
-        for(int i = 0; i < items.length();i++){
-            JSONObject item = items.getJSONObject(i);
-            data.add(i,item.get("name"));
-            maniView.setItems(data);
-        }
-        
-        in.close();
-    
-    }
-    public void getPedi() throws IOException, ParseException, JSONException {
-
-        String url = "http://beyoutifulstudio.herokuapp.com/api/services/54ebc49653a2c2d504ac590a";
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        con.setRequestProperty("Authorization", apiPassword());
-        con.setRequestProperty("Content-Type", "application/json");
-        con.setRequestProperty("Accept", "application/json");
-        
-
-        
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        JSONObject pedicure;
-        pedicure =  new JSONObject(response.toString());
-        //System.out.println(manicure);
-        JSONArray items;
-        data = FXCollections.observableArrayList();
-        items = pedicure.getJSONArray("items");
-        for(int i = 0; i < items.length();i++){
-            JSONObject item = items.getJSONObject(i);
-            data.add(i,item.get("name"));
-            pediView.setItems(data);
-        }
-        
-        in.close();
-    
-    }
-    public void getNails() throws IOException, ParseException, JSONException {
-
-        String url = "http://beyoutifulstudio.herokuapp.com/api/services/54ebc48f53a2c2d504ac5908";
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        con.setRequestProperty("Authorization", apiPassword());
-        con.setRequestProperty("Content-Type", "application/json");
-        con.setRequestProperty("Accept", "application/json");
-        
-
-        
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        JSONObject nails;
-        nails =  new JSONObject(response.toString());
-        //System.out.println(manicure);
-        JSONArray items;
-        data = FXCollections.observableArrayList();
-        items = nails.getJSONArray("items");
-        for(int i = 0; i < items.length();i++){
-            JSONObject item = items.getJSONObject(i);
-            data.add(i,item.get("name"));
-            nailView.setItems(data);
-        }
-        
-        in.close();
-    
-    }
-    //Item testItem = new Item();
-    //testItem.getItems();
-    //testItem.populateItem();
-    //***Below are the methods I've attempted to replace with the class Item -SEAN***
-    public void populateItem() throws IOException {
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-        boolean auth = BEYOU_DB.authenticate("beyoutiful", Password().toCharArray());
-        DBCollection table = BEYOU_DB.getCollection("items");
-        BasicDBObject searchQuery = new BasicDBObject();
-        DBCursor cursor = table.find(searchQuery);
-        while (cursor.hasNext()) {
-            DBObject item = cursor.next();
-            itemID.setText((String) item.get("_id"));
-            itemName.setText((String) item.get("name"));
-            itemPrice.setText((String) item.get("price"));
-            itemDescription.setText((String) item.get("description"));
-            
-        }
-    }
     protected static String Password() throws FileNotFoundException, IOException{
         String password="";
         try {
@@ -434,7 +302,7 @@ public class FXMLDocumentController implements Initializable {
         return password;
       
     }
-    public void deleteProfile() throws IOException{
+  /*  public void deleteProfile() throws IOException{
           String password = Password();
         DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
         boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
@@ -527,7 +395,7 @@ public class FXMLDocumentController implements Initializable {
     }
     public void deleteTech(){
        
-    }
+    }*/
     public void searchUpdateClient(String Name) throws IOException 
     {        
         String password = Password();
