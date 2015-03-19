@@ -29,7 +29,7 @@ import org.json.simple.parser.ParseException;
  *
  * @author brandonfoss
  */
-public class items {
+public class Items {
   
     @FXML
     protected ObservableList data;

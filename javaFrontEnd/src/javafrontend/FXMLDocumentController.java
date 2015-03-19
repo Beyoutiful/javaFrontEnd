@@ -5,12 +5,6 @@
  */
 package javafrontend;
 
-import com.mongodb.BasicDBObject;
-import org.bson.types.ObjectId;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,7 +17,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -38,11 +31,8 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -52,13 +42,13 @@ import org.json.simple.parser.ParseException;
  * 
  */
 public class FXMLDocumentController implements Initializable {
-    items testItem = new items();
-    Technicians technicians = new Technicians();
+    Items items = new Items();
+    Technicians technicians = new Technicians(this);
+    Clients clients = new Clients(this);
     
     @FXML
     protected static Label clientName;
-    @FXML
-    protected Label clientIDLabel;
+    
     @FXML
     protected static Label clientNumber;
     @FXML
@@ -110,7 +100,9 @@ public class FXMLDocumentController implements Initializable {
     *   Clients
     */
     @FXML
-    private Tab client;
+    private Tab clientTab;
+    @FXML
+    protected Label clientIDLabel;
     @FXML
     protected TextField clientNameField;
     @FXML
@@ -128,7 +120,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     protected TextField zipcodeField;
     @FXML
-    private TextField searchName;
+     TextField searchName;
     @FXML
     protected Button createNewClient;
     /*
@@ -217,37 +209,36 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handleSearchButtonAction(ActionEvent event) throws IOException {
-     searchUpdateClient(searchName.getText());
+        System.out.println(searchName.getText());
+    clients.searchClient(searchName.getText());
      
      
     }
     @FXML
     private void handleSaveButtonAction(ActionEvent event) throws IOException {
-        updateClient();
+     clients.updateClient();
     }
     @FXML
     private void handleNewClientButton(ActionEvent event){
-        newClient();
+        clients.newClient(clientNameField.getText());
         createNewClient.setVisible(false);
     }
      @FXML
     private void handleManiButton(ActionEvent event) throws IOException, ParseException, JSONException{
-        testItem.getMani(maniView);
+        items.getMani(maniView);
     }
       @FXML
     private void handlePediButton(ActionEvent event) throws IOException, ParseException, JSONException{
-        testItem.getPedi(pediView);
+        items.getPedi(pediView);
     }
       @FXML
     private void handleNailsButton(ActionEvent event) throws IOException, ParseException, JSONException{
-        testItem.getNails(nailView);
+        items.getNails(nailView);
     }
      @FXML
     private void handleTechSearchButtonAction(ActionEvent event) throws IOException {
     String name = new String();
-     technicians.searchTech(techID,techName,techPhone,techEmail,techStreet,techCity,techState,
-             techZipcode,techTitle,techImageURL,techDescription,techImageBox,createProfileButton,
-             deleteProfileButton);
+     technicians.searchTech();
     }
       @FXML
     private void handleCreateProfileButton(ActionEvent event) throws IOException, ParseException, JSONException{
@@ -256,6 +247,14 @@ public class FXMLDocumentController implements Initializable {
      @FXML
     private void handleDeleteProfileButton(ActionEvent event) throws IOException, ParseException, JSONException{
         technicians.deleteProfile(techID);
+    }
+     @FXML
+    private void handleTechSaveButton(ActionEvent event) throws IOException, ParseException, JSONException{
+        technicians.updateTech();
+    }
+     @FXML
+    private void handleNewTechButton(ActionEvent event) throws IOException, ParseException, JSONException{
+        technicians.newTech();
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -302,200 +301,8 @@ public class FXMLDocumentController implements Initializable {
         return password;
       
     }
-  /*  public void deleteProfile() throws IOException{
-          String password = Password();
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-        boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
-        DBCollection table = BEYOU_DB.getCollection("profiles");
-        String ID = techID.getText();
-        BasicDBObject searchQuery = new BasicDBObject();
-       Object proID = null;
-        searchQuery.put("technician", new ObjectId(ID)); 
-        DBCursor cursor = table.find(searchQuery);
-        System.out.println(cursor.hasNext());
-        if (cursor.hasNext()==true){
-            while (cursor.hasNext()) {
-            DBObject profiles = cursor.next();
-          
-            proID = profiles.get("_id");
-               
-       // String profileID= cursor.toString();
-        
-            }
-            
-        }
-       BasicDBObject deleteQuery = new BasicDBObject();
-       deleteQuery.put("_id", new ObjectId(proID.toString()));
-       table.remove(deleteQuery);
-    }
-    public void createProfile() throws IOException{
-         String password = Password();
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-        boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
-        DBCollection table = BEYOU_DB.getCollection("profiles");
-        String ID = techID.getText();
-        BasicDBObject document = new BasicDBObject();
-        
-        document.put("technician", new ObjectId(ID));
-       
-        document.put("__v", 0);
-        table.insert(document);
-    }
-    public void searchTech(String Name) throws IOException{
-       {        
-        String password = Password();
-            DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-             boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
 
-        DBCollection table = BEYOU_DB.getCollection("technicians");
-        BasicDBObject searchQuery = new BasicDBObject();
-        searchQuery.put("name", Name);
-        DBCursor cursor = table.find(searchQuery);
-
-        String technicianName = searchQuery.getString(Name);
-        
-        if (cursor.hasNext()==true){
-            while (cursor.hasNext()) {
-            DBObject technicians = cursor.next();
-          
-            Object ID = technicians.get("_id");
-            techID.setText(ID.toString());
-            techName.setText(technicians.get("name").toString());
-            techEmail.setText(technicians.get("email").toString());
-            techPhone.setText(technicians.get("phone").toString());
-            techStreet.setText(technicians.get("address").toString());
-            techCity.setText(technicians.get("city").toString());
-            techState.setText(technicians.get("state").toString());
-            techZipcode.setText(technicians.get("zip").toString());
-            techTitle.setText(technicians.get("title").toString());
-            techImageURL.setText(technicians.get("image").toString());
-            techDescription.setText(technicians.get("description").toString());
-            
-                
-               Image image = new Image("http://beyoutifulstudio.herokuapp.com/"+technicians.get("image"));
-            techImageBox.setImage(image);
-                
-            }
-        }else{
-         System.out.println("Cant locate that name.");
-         clientNameField.setText("");
-         clientEmailField.setText("");
-         clientNumberField.setText("");
-         streetNumberField.setText("");
-         cityField.setText("");
-         stateField.setText("");
-         zipcodeField.setText("");
-         createNewClient.setVisible(true);
-         
-    }
-    }
-    }
-    public void createTech() throws IOException{
-        
-    }
-    public void deleteTech(){
-       
-    }*/
-    public void searchUpdateClient(String Name) throws IOException 
-    {        
-        String password = Password();
-            DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-             boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
-
-        DBCollection table = BEYOU_DB.getCollection("clients");
-        BasicDBObject searchQuery = new BasicDBObject();
-        searchQuery.put("name", Name);
-        DBCursor cursor = table.find(searchQuery);
-
-        String clientName = searchQuery.getString(Name);
-        
-        if (cursor.hasNext()==true){
-            while (cursor.hasNext()) {
-            DBObject client = cursor.next();
-            System.out.println(client);
-            Object ID = client.get("_id");
-            clientIDLabel.setText(ID.toString());
-            clientNameField.setText(client.get("name").toString());
-            clientEmailField.setText(client.get("email").toString());
-            clientNumberField.setText(client.get("phone").toString());
-            streetNumberField.setText(client.get("address").toString());
-            cityField.setText(client.get("city").toString());
-            stateField.setText(client.get("state").toString());
-            zipcodeField.setText(client.get("zip").toString());
-            createNewClient.setVisible(false);
-            }
-        }else{
-         System.out.println("Cant locate that name.");
-         clientNameField.setText("");
-         clientEmailField.setText("");
-         clientNumberField.setText("");
-         streetNumberField.setText("");
-         cityField.setText("");
-         stateField.setText("");
-         zipcodeField.setText("");
-         createNewClient.setVisible(true);
-         
-    }
-    }
-  // This function is working as it should
-    public void updateClient() throws IOException {
-        String password = Password();
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-        boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
-
-        DBCollection table = BEYOU_DB.getCollection("clients");
-        
-        BasicDBObject query = new BasicDBObject();
-        System.out.println(clientIDLabel.getText());
-        query.put("_id", new ObjectId(clientIDLabel.getText()));
-        BasicDBObject newDocument = new BasicDBObject();
-        newDocument.put("name", clientNameField.getText());
-        newDocument.put("phone", clientNumberField.getText());
-        newDocument.put("email", clientEmailField.getText());
-        newDocument.put("address", streetNumberField.getText());
-        newDocument.put("city", cityField.getText());
-        newDocument.put("state", stateField.getText());
-        newDocument.put("zip", zipcodeField.getText());
-        
-        BasicDBObject updateObj = new BasicDBObject();
-        updateObj.put("$set", newDocument);
-
-        table.update(query, updateObj);
-        clientNameField.setText("");
-        clientEmailField.setText("");
-        clientNumberField.setText("");
-        streetNumberField.setText("");
-        cityField.setText("");
-        stateField.setText("");
-        zipcodeField.setText("");
-    }
-
-    //Adds new client (does not update)
-    public void newClient() 
-    {
-        
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-        DBCollection table = BEYOU_DB.getCollection("clients");
-        BasicDBObject document = new BasicDBObject();
-        document.put("name", clientNameField.getText());
-        document.put("phone", clientNumberField.getText());
-        document.put("email", clientEmailField.getText());
-        document.put("address", streetNumberField.getText());
-        document.put("city", cityField.getText());
-        document.put("state", stateField.getText());
-        document.put("zip", zipcodeField.getText());
-        document.put("__v", 0);
-        table.insert(document);
-        clientNameField.setText("");
-        clientEmailField.setText("");
-        clientNumberField.setText("");
-        streetNumberField.setText("");
-        cityField.setText("");
-        stateField.setText("");
-        zipcodeField.setText("");
-    }
-
-
+  
     private void login() throws MalformedURLException, IOException, ParseException {
         String url = "http://beyoutifulstudio.herokuapp.com/api/technicians?email="
                 + userField.getText() + "&password=" + passField.getText();
@@ -517,7 +324,7 @@ public class FXMLDocumentController implements Initializable {
         if (responseCode == 200) {
             loginLabel.setText("Welcome "+ userField.getText());
             Items.setDisable(false);
-            client.setDisable(false);
+            clientTab.setDisable(false);
         }
         if (responseCode == 204) {
             loginLabel.setText("User/Password not found.");
