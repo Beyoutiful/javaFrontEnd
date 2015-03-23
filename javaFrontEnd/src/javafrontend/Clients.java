@@ -81,7 +81,7 @@ public class Clients {
         if (cursor.hasNext()==true){
             while (cursor.hasNext()) {
             DBObject client = cursor.next();
-            System.out.println(" got here Chris");
+            
             Object ID = client.get("_id");
             clientIDLabel().setText(ID.toString());
             clientNameField().setText(client.get("name").toString());
@@ -94,8 +94,8 @@ public class Clients {
             createNewClient().setVisible(false);
             }
         }else{
-         System.out.println("Cant locate that name.");
-         clientNameField().setText("");
+         clientNameField().setText(searchName().getText());
+         //clientNameField().setText("");
          clientEmailField().setText("");
          clientNumberField().setText("");
          streetNumberField().setText("");

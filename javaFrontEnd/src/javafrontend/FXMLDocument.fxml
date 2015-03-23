@@ -21,7 +21,7 @@
             </ImageView>
             <TabPane layoutY="94.0" prefHeight="681.0" prefWidth="1089.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab fx:id="clientTab" closable="false" text="Client">
+                <Tab fx:id="clientTab" closable="false" disable="true" text="Client">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -91,7 +91,7 @@
                         </AnchorPane>
                     </content>
                   </Tab>
-                  <Tab fx:id="servicesTab" text="Services">
+                  <Tab fx:id="servicesTab" disable="true" text="Services">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="709.0" prefWidth="1333.0">
                            <children>
@@ -110,7 +110,7 @@
                         </AnchorPane>
                     </content>
                   </Tab>
-                  <Tab fx:id="techTab" text="Nail Tech">
+                  <Tab fx:id="techTab" disable="true" text="Nail Tech">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -170,7 +170,7 @@
                         </AnchorPane>
                     </content>
                   </Tab>
-                  <Tab text="Appointments">
+                  <Tab fx:id="appointmentsTab" disable="true" text="Appointments">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                     </content>

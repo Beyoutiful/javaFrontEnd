@@ -81,6 +81,8 @@ public class FXMLDocumentController implements Initializable {
     protected static MenuButton menu;
     @FXML
     protected static ChoiceBox choiceBox;
+    @FXML
+    protected Tab appointmentsTab;
    /*
     *   Login
     */
@@ -126,6 +128,8 @@ public class FXMLDocumentController implements Initializable {
     /*
     *   Services
     */
+    @FXML
+    protected Tab servicesTab;
     @FXML
     protected Button serviceManicure;
     @FXML
@@ -199,6 +203,8 @@ public class FXMLDocumentController implements Initializable {
 
     public FXMLDocumentController() throws UnknownHostException {
         mongoClient = new MongoClient("ds035750.mongolab.com", 35750);
+        
+        
     }
 
     @FXML
@@ -209,7 +215,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handleSearchButtonAction(ActionEvent event) throws IOException {
-        System.out.println(searchName.getText());
+ 
     clients.searchClient(searchName.getText());
      
      
@@ -323,8 +329,10 @@ public class FXMLDocumentController implements Initializable {
         }
         if (responseCode == 200) {
             loginLabel.setText("Welcome "+ userField.getText());
-            Items.setDisable(false);
+            appointmentsTab.setDisable(false);
             clientTab.setDisable(false);
+            techTab.setDisable(false);
+            servicesTab.setDisable(false);
         }
         if (responseCode == 204) {
             loginLabel.setText("User/Password not found.");
