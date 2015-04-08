@@ -42,7 +42,7 @@ import org.json.simple.parser.ParseException;
  * 
  */
 public class FXMLDocumentController implements Initializable {
-    Items items = new Items();
+    Items items = new Items(this);
     Technicians technicians = new Technicians(this);
     Clients clients = new Clients(this);
     
@@ -142,6 +142,56 @@ public class FXMLDocumentController implements Initializable {
     protected ListView pediView;
     @FXML 
     protected ListView nailView;
+    @FXML
+    protected Button getItem;
+    @FXML
+    protected TextField maniTitle;
+    @FXML
+    protected TextField maniDesc;
+    @FXML
+    protected TextField maniPrice;
+    @FXML
+    protected Button maniUpdate;
+    @FXML
+    protected Button maniCreate;
+    @FXML
+    protected TextField pediTitle;
+    @FXML
+    protected TextField pediDesc;
+    @FXML
+    protected TextField pediPrice;
+    @FXML
+    protected Button pediUpdate;
+    @FXML
+    protected Button pediCreate;
+    @FXML
+    protected TextField nailTitle;
+    @FXML
+    protected TextField nailDesc;
+    @FXML
+    protected TextField nailPrice;
+    @FXML
+    protected Button nailUpdate;
+    @FXML
+    protected Button nailCreate;
+    @FXML
+    protected Label pediIDlabel;
+    @FXML
+    protected Label maniIDlabel;
+    @FXML
+    protected Label nailsIDlabel;
+     @FXML
+    protected Button pediUpdateButton;
+    @FXML
+    protected Button maniUpdateButton;
+    @FXML
+    protected Button nailUpdateButton;
+    @FXML
+    protected Button createNewMani;
+    @FXML
+    protected Button createNewPedi;
+    @FXML
+    protected Button createNewNail;
     
     /*
      *   Items
@@ -198,6 +248,8 @@ public class FXMLDocumentController implements Initializable {
     protected Button createProfileButton;
     @FXML
     protected Button deleteProfileButton;
+    @FXML
+    protected Button uploadButton;
 
     private final MongoClient mongoClient;
 
@@ -208,17 +260,16 @@ public class FXMLDocumentController implements Initializable {
     }
 
     @FXML
-    private void handleButtonAction(ActionEvent event) throws IOException, MalformedURLException, ParseException {
-        
+    private void handleButtonAction(ActionEvent event) throws IOException, 
+            MalformedURLException, ParseException {  
         login();
     }
 
     @FXML
-    private void handleSearchButtonAction(ActionEvent event) throws IOException {
+    private void handleSearchButtonAction(ActionEvent event) throws 
+            IOException {
  
-    clients.searchClient(searchName.getText());
-     
-     
+    clients.searchClient(searchName.getText()); 
     }
     @FXML
     private void handleSaveButtonAction(ActionEvent event) throws IOException {
@@ -261,6 +312,46 @@ public class FXMLDocumentController implements Initializable {
      @FXML
     private void handleNewTechButton(ActionEvent event) throws IOException, ParseException, JSONException{
         technicians.newTech();
+    }
+    @FXML
+    private void handleNewImageButton(ActionEvent event) throws IOException, ParseException, JSONException{
+        technicians.newImage();
+    }
+    @FXML
+    private void handleNailItem(ActionEvent event) throws IOException {
+        items.queryNails(nailView);
+    }
+    @FXML
+    private void handleManiItem(ActionEvent event) throws IOException {
+        items.queryMani(maniView);
+    }
+    @FXML
+    private void handlePediItem(ActionEvent event) throws IOException {
+        items.queryPedi(pediView);
+    }
+     @FXML
+    private void handleNailUpdate(ActionEvent event) throws IOException {
+        items.setNails();
+    }
+    @FXML
+    private void handleManiUpdate(ActionEvent event) throws IOException {
+        items.setMani();
+    }
+    @FXML
+    private void handlePediUpdate(ActionEvent event) throws IOException {
+        items.setPedi();
+    }
+      @FXML
+    private void handleNailNew(ActionEvent event) throws IOException {
+        items.newNail();
+    }
+    @FXML
+    private void handleManiNew(ActionEvent event) throws IOException {
+        items.newMani();
+    }
+    @FXML
+    private void handlePediNew(ActionEvent event) throws IOException {
+        items.newPedi();
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {

@@ -17,14 +17,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Map;
-import java.lang.Object;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import static javafrontend.FXMLDocumentController.Password;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -33,6 +32,7 @@ import javafx.scene.image.ImageView;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+
 
 import org.bson.types.ObjectId;
 
@@ -223,6 +223,9 @@ public class Technicians {
         config.put("api_secret", "7fBLpLmr3bQwHrMVyn_k7YR8m_I"); 
         Cloudinary cloudinary = new Cloudinary(config);
         
+        //Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap("cloud_name","hslj0appl","api_key","","api_secret",""));
+        
+        
         final JFileChooser fc = new JFileChooser();
         fc.setMultiSelectionEnabled(true);
         fc.setCurrentDirectory(new File("C:\\tmp"));
@@ -236,18 +239,15 @@ public class Technicians {
                 File file = fc.getSelectedFile();
                 System.out.println("Opening: " + file.getAbsolutePath());
                    File img = new File(file.getAbsolutePath());
-                  /*  try {
-                       // Map uploadResult = cloudinary.uploader().upload(img, ObjectUtils.emptyMap());
+                 
+                    try {
+                        cloudinary.uploader().upload(img, ObjectUtils.emptyMap());
                     } catch (IOException ex) {
                         Logger.getLogger(Technicians.class.getName()).log(Level.SEVERE, null, ex);
-                    }*/
-                    
-                    
+                    }     
                 }
-            }
-           
-        });
-        
+            }   
+        }); 
         Container pane = frame.getContentPane();
         pane.setLayout(new GridLayout(1, 1, 10, 10));
         pane.add(btn1);
@@ -255,6 +255,8 @@ public class Technicians {
         frame.setSize(300, 200);
         frame.setVisible(true);
     }
+
+    
 
     }
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.web.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.effect.*?>
@@ -91,7 +92,7 @@
                         </AnchorPane>
                     </content>
                   </Tab>
-                  <Tab fx:id="servicesTab" disable="true" text="Services">
+                  <Tab fx:id="servicesTab" text="Services">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="709.0" prefWidth="1333.0">
                            <children>
@@ -106,6 +107,27 @@
                               <Button fx:id="serviceNails" layoutX="36.0" layoutY="392.0" mnemonicParsing="false" onAction="#handleNailsButton" text="Nails" />
                               <ListView fx:id="pediView" layoutX="36.0" layoutY="217.0" prefHeight="161.0" prefWidth="522.0" />
                               <ListView fx:id="nailView" layoutX="37.0" layoutY="425.0" prefHeight="151.0" prefWidth="521.0" />
+                              <TextField fx:id="maniTitle" layoutX="609.0" layoutY="40.0" prefHeight="26.0" prefWidth="369.0" promptText="Service" />
+                              <TextField fx:id="maniDesc" layoutX="609.0" layoutY="73.0" prefHeight="26.0" prefWidth="367.0" promptText="Description" />
+                              <TextField fx:id="maniPrice" layoutX="813.0" layoutY="110.0" promptText="Price" />
+                              <Button fx:id="maniUpdate" layoutX="609.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleManiItem" prefHeight="26.0" prefWidth="82.0" text="Select" />
+                              <Button fx:id="createNewMani" layoutX="711.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleManiNew" prefHeight="26.0" prefWidth="91.0" text="Create New" />
+                              <Button fx:id="pediUpdate" layoutX="610.0" layoutY="291.0" mnemonicParsing="false" onAction="#handlePediItem" prefHeight="26.0" prefWidth="80.0" text="Select" />
+                              <Button fx:id="createNewPedi" layoutX="708.0" layoutY="291.0" mnemonicParsing="false" onAction="#handlePediNew" text="Create New" />
+                              <TextField fx:id="pediTitle" layoutX="610.0" layoutY="217.0" prefHeight="26.0" prefWidth="362.0" promptText="Service" />
+                              <TextField fx:id="pediDesc" layoutX="610.0" layoutY="252.0" prefHeight="26.0" prefWidth="361.0" promptText="Description" />
+                              <TextField fx:id="pediPrice" layoutX="818.0" layoutY="291.0" prefHeight="26.0" prefWidth="153.0" promptText="Price" />
+                              <TextField fx:id="nailTitle" layoutX="601.0" layoutY="425.0" prefHeight="26.0" prefWidth="364.0" promptText="Service" />
+                              <TextField fx:id="nailDesc" layoutX="601.0" layoutY="462.0" prefHeight="26.0" prefWidth="362.0" promptText="Description" />
+                              <TextField fx:id="nailPrice" layoutX="800.0" layoutY="501.0" promptText="Price" />
+                              <Button fx:id="nailsUpdate" layoutX="601.0" layoutY="501.0" mnemonicParsing="false" onAction="#handleNailItem" prefHeight="26.0" prefWidth="87.0" text="Select" />
+                              <Button fx:id="createNewNail" layoutX="706.0" layoutY="501.0" mnemonicParsing="false" onAction="#handleNailNew" text="Create New" />
+                              <Label fx:id="maniIDlabel" layoutX="211.0" layoutY="19.0" text="Label" visible="false" />
+                              <Label fx:id="pediIDlabel" layoutX="211.0" layoutY="196.0" text="Label" visible="false" />
+                              <Label fx:id="nailsIDlabel" layoutX="211.0" layoutY="405.0" text="Label" visible="false" />
+                              <Button fx:id="maniUpdateButton" layoutX="677.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleManiUpdate" text="Update" />
+                              <Button fx:id="pediUpdateButton" layoutX="677.0" layoutY="331.0" mnemonicParsing="false" onAction="#handlePediUpdate" text="Update" />
+                              <Button fx:id="nailUpdateButton" layoutX="662.0" layoutY="541.0" mnemonicParsing="false" onAction="#handleNailUpdate" text="Update" />
                            </children>
                         </AnchorPane>
                     </content>
@@ -137,7 +159,7 @@
                               <Button fx:id="techSearchButton" layoutX="173.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleTechSearchButtonAction" text="Search" />
                               <Button fx:id="techEditButton" layoutX="70.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleTechSaveButton" prefHeight="26.0" prefWidth="61.0" text="Save" />
                               <Label fx:id="techID" layoutX="70.0" layoutY="29.0" prefHeight="16.0" prefWidth="160.0" text="id number" visible="false" />
-                              <ImageView fx:id="techImageBox" fitHeight="613.0" fitWidth="526.0" layoutX="345.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="techImageBox" fitHeight="613.0" fitWidth="526.0" layoutX="233.0" pickOnBounds="true" preserveRatio="true" />
                               <Label layoutX="21.0" layoutY="61.0" text="Name" />
                               <Label layoutX="21.0" layoutY="132.0" text="Phone" />
                               <Label layoutX="21.0" layoutY="158.0" text="Email" />
@@ -145,34 +167,37 @@
                               <Label layoutX="21.0" layoutY="226.0" text="City" />
                               <Label layoutX="21.0" layoutY="252.0" text="State" />
                               <Label layoutX="21.0" layoutY="278.0" text="Zipcode" />
-                              <TextArea fx:id="techDescription" layoutX="831.0" layoutY="142.0" prefHeight="364.0" prefWidth="200.0" promptText="Description" wrapText="true" />
-                              <TextField fx:id="techTitle" layoutX="831.0" layoutY="64.0" promptText="Title" />
-                              <TextField fx:id="techImageURL" layoutX="831.0" layoutY="101.0" promptText="Image URL" />
-                              <Label layoutX="799.0" layoutY="68.0" text="Title">
+                              <TextArea fx:id="techDescription" layoutX="861.0" layoutY="142.0" prefHeight="364.0" prefWidth="200.0" promptText="Description" wrapText="true" />
+                              <TextField fx:id="techTitle" layoutX="861.0" layoutY="64.0" promptText="Title" />
+                              <TextField fx:id="techImageURL" layoutX="861.0" layoutY="99.0" promptText="Image URL" />
+                              <Label layoutX="827.0" layoutY="68.0" text="Title">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="785.0" layoutY="103.0" text="Image">
+                              <Label layoutX="814.0" layoutY="104.0" text="Image">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="753.0" layoutY="144.0" text="Description">
+                              <Label layoutX="781.0" layoutY="144.0" text="Description">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="deleteProfileButton" layoutX="934.0" layoutY="526.0" mnemonicParsing="false" onAction="#handleDeleteProfileButton" text="Delete Profile" />
-                              <Button fx:id="createProfileButton" layoutX="831.0" layoutY="526.0" mnemonicParsing="false" onAction="#handleCreateProfileButton" text="Create Profile" />
-                              <TextField layoutX="832.0" layoutY="560.0" prefHeight="26.0" prefWidth="198.0" promptText="Image URL" />
+                              <Button fx:id="deleteProfileButton" layoutX="964.0" layoutY="513.0" mnemonicParsing="false" onAction="#handleDeleteProfileButton" text="Delete Profile" />
+                              <Button fx:id="createProfileButton" layoutX="861.0" layoutY="513.0" mnemonicParsing="false" onAction="#handleCreateProfileButton" text="Create Profile" />
+                              <Button fx:id="uploadButton" layoutX="800.0" layoutY="560.0" mnemonicParsing="false" onAction="#handleNewImageButton" prefHeight="26.0" prefWidth="142.0" text="Upload New Image" />
                            </children>
                         </AnchorPane>
                     </content>
                   </Tab>
-                  <Tab fx:id="appointmentsTab" disable="true" text="Appointments">
+                  <Tab fx:id="appointmentsTab" text="Appointments">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <WebView layoutX="124.0" layoutY="23.0" prefHeight="562.0" prefWidth="609.0" />
+                           </children></AnchorPane>
                     </content>
                   </Tab>
               </tabs>
