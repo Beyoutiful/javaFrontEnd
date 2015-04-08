@@ -1,7 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * @author Brandon Foss, Calvin Brewer
+ *
  */
 package javafrontend;
 
@@ -14,106 +14,107 @@ import com.mongodb.MongoClient;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import static javafrontend.FXMLDocumentController.Password;
-import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import org.bson.types.ObjectId;
 
-/**
- *
- * @author brandonfoss
- */
 public class Clients {
-    
+
     FXMLDocumentController controller;
+    private final MongoClient mongoClient;
 
-
-   private final MongoClient mongoClient;
-    
     public Clients(FXMLDocumentController _controller) throws UnknownHostException {
-        
-        controller=_controller;
+
+        controller = _controller;
         mongoClient = new MongoClient("ds035750.mongolab.com", 35750);
     }
-    /*
-    *   Clients
-    */
-    protected Label clientIDLabel() { return controller.clientIDLabel; }
-    
-    protected TextField clientNameField() { return controller.clientNameField; }
-    
-    protected TextField clientNumberField() { return controller.clientNumberField; }
-    
-    protected TextField clientAddressField() { return controller.clientAddressField; }
-    
-    protected TextField clientEmailField() { return controller.clientEmailField; }
-    
-    protected TextField streetNumberField() { return controller.streetNumberField; }
 
-    protected TextField cityField() { return controller.cityField; }
-  
-    protected TextField stateField() { return controller.stateField; }
-  
-    protected TextField zipcodeField() { return controller.zipcodeField; }
-  
-    protected TextField searchName() { return controller.searchName; }
-    
-    protected Button createNewClient() { return controller.createNewClient; }
-     
+    protected Label clientIDLabel() {
+        return controller.clientIDLabel;
+    }
 
-    
-     
-    public void searchClient(String Name) throws IOException 
-    {        
+    protected TextField clientNameField() {
+        return controller.clientNameField;
+    }
+
+    protected TextField clientNumberField() {
+        return controller.clientNumberField;
+    }
+
+    protected TextField clientAddressField() {
+        return controller.clientAddressField;
+    }
+
+    protected TextField clientEmailField() {
+        return controller.clientEmailField;
+    }
+
+    protected TextField streetNumberField() {
+        return controller.streetNumberField;
+    }
+
+    protected TextField cityField() {
+        return controller.cityField;
+    }
+
+    protected TextField stateField() {
+        return controller.stateField;
+    }
+
+    protected TextField zipcodeField() {
+        return controller.zipcodeField;
+    }
+
+    protected TextField searchName() {
+        return controller.searchName;
+    }
+
+    protected Button createNewClient() {
+        return controller.createNewClient;
+    }
+
+    public void searchClient(String Name) throws IOException {
         String password = Password();
-            DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
-             boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
-
+        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
         DBCollection table = BEYOU_DB.getCollection("clients");
         BasicDBObject searchQuery = new BasicDBObject();
         searchQuery.put("name", Name);
         DBCursor cursor = table.find(searchQuery);
-
         String clientName = searchQuery.getString(Name);
-        
-        if (cursor.hasNext()==true){
+        if (cursor.hasNext() == true) {
             while (cursor.hasNext()) {
-            DBObject client = cursor.next();
-            
-            Object ID = client.get("_id");
-            clientIDLabel().setText(ID.toString());
-            clientNameField().setText(client.get("name").toString());
-            clientEmailField().setText(client.get("email").toString());
-            clientNumberField().setText(client.get("phone").toString());
-            streetNumberField().setText(client.get("address").toString());
-            cityField().setText(client.get("city").toString());
-            stateField().setText(client.get("state").toString());
-            zipcodeField().setText(client.get("zip").toString());
-            createNewClient().setVisible(false);
+                DBObject client = cursor.next();
+                Object ID = client.get("_id");
+                clientIDLabel().setText(ID.toString());
+                clientNameField().setText(client.get("name").toString());
+                clientEmailField().setText(client.get("email").toString());
+                clientNumberField().setText(client.get("phone").toString());
+                streetNumberField().setText(client.get("address").toString());
+                cityField().setText(client.get("city").toString());
+                stateField().setText(client.get("state").toString());
+                zipcodeField().setText(client.get("zip").toString());
+                createNewClient().setVisible(false);
             }
-        }else{
-         clientNameField().setText(searchName().getText());
-         //clientNameField().setText("");
-         clientEmailField().setText("");
-         clientNumberField().setText("");
-         streetNumberField().setText("");
-         cityField().setText("");
-         stateField().setText("");
-         zipcodeField().setText("");
-         createNewClient().setVisible(true);
-         
+        } else {
+            clientNameField().setText(searchName().getText());
+            //clientNameField().setText("");
+            clientEmailField().setText("");
+            clientNumberField().setText("");
+            streetNumberField().setText("");
+            cityField().setText("");
+            stateField().setText("");
+            zipcodeField().setText("");
+            createNewClient().setVisible(true);
+        }
     }
-    }
-  // This function is working as it should
+
     public void updateClient() throws IOException {
         String password = Password();
         DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
         boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
-
         DBCollection table = BEYOU_DB.getCollection("clients");
-        
         BasicDBObject query = new BasicDBObject();
         System.out.println(clientIDLabel().getText());
         query.put("_id", new ObjectId(clientIDLabel().getText()));
@@ -125,10 +126,8 @@ public class Clients {
         newDocument.put("city", cityField().getText());
         newDocument.put("state", stateField().getText());
         newDocument.put("zip", zipcodeField().getText());
-        
         BasicDBObject updateObj = new BasicDBObject();
         updateObj.put("$set", newDocument);
-
         table.update(query, updateObj);
         clientNameField().setText("");
         clientEmailField().setText("");
@@ -139,9 +138,7 @@ public class Clients {
         zipcodeField().setText("");
     }
 
-    //Adds new client (does not update)
-    public void newClient(String Name){
-        
+    public void newClient(String Name) {
         DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
         DBCollection table = BEYOU_DB.getCollection("clients");
         BasicDBObject document = new BasicDBObject();
@@ -162,6 +159,4 @@ public class Clients {
         stateField().setText("");
         zipcodeField().setText("");
     }
-
-
 }

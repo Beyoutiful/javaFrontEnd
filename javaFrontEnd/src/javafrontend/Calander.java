@@ -1,15 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* Authors Brandon Foss, Calvin Brewer
+*/
 package javafrontend;
 
 
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventAttendee;
-
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.client.util.DateTime;
 import java.io.IOException;
@@ -17,10 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
 
-/**
- *
- * @author brandonfoss
- */
+
 public class Calander {
 public void createEvent(Calendar cal) throws IOException {       
 
