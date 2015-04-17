@@ -18,8 +18,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.UnknownHostException;
-import static javafrontend.FXMLDocumentController.Password;
-import static javafrontend.FXMLDocumentController.apiPassword;
+import static javafrontend.FXMLDocumentController.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -39,29 +38,6 @@ public class Items {
     FXMLDocumentController controller;
     @FXML
     protected ObservableList data;
-    /*@FXML
-     protected TextField itemID;
-     @FXML
-     protected static Label itemLabel;
-     @FXML
-     protected static Label priceLabel;
-     @FXML
-     protected static Label descriptionLabel;
-     /*
-     *   Services
-     */
-    /*@FXML
-     protected Button serviceManicure;
-     @FXML
-     protected Button servicePedicure;
-     @FXML
-     protected Button serviceNails;
-     @FXML
-     protected ListView pediView;
-     @FXML
-     protected ListView nailView;
-
-     public ListView maniView;*/
     /*
      *   Services
      */
@@ -69,7 +45,7 @@ public class Items {
 
     public Items(FXMLDocumentController _controller) throws UnknownHostException {
         controller = _controller;
-        mongoClient = new MongoClient("ds035750.mongolab.com", 35750);
+        mongoClient = new MongoClient(mongo, port);
     }
 
     protected TextField maniTitle() {
@@ -149,7 +125,7 @@ public class Items {
         String url = "http://beyoutifulstudio.herokuapp.com/api/services/54ebc49353a2c2d504ac5909";
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        con.setRequestProperty("Authorization", apiPassword());
+        con.setRequestProperty("Authorization", FXMLDocumentController.apiPass);
         con.setRequestProperty("Content-Type", "application/json");
         con.setRequestProperty("Accept", "application/json");
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -176,7 +152,7 @@ public class Items {
         String url = "http://beyoutifulstudio.herokuapp.com/api/services/54ebc49653a2c2d504ac590a";
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        con.setRequestProperty("Authorization", apiPassword());
+        con.setRequestProperty("Authorization", FXMLDocumentController.apiPass);
         con.setRequestProperty("Content-Type", "application/json");
         con.setRequestProperty("Accept", "application/json");
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -203,7 +179,7 @@ public class Items {
         String url = "http://beyoutifulstudio.herokuapp.com/api/services/54ebc48f53a2c2d504ac5908";
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        con.setRequestProperty("Authorization", apiPassword());
+        con.setRequestProperty("Authorization", FXMLDocumentController.apiPass);
         con.setRequestProperty("Content-Type", "application/json");
         con.setRequestProperty("Accept", "application/json");
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -230,8 +206,8 @@ public class Items {
         String name = new String();
         nailTitle().setText(nailView.getSelectionModel().getSelectedItem().toString());
         name = nailView.getSelectionModel().getSelectedItem().toString();
-        String password = Password();
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        String password = FXMLDocumentController.beyouPass;
+        DB BEYOU_DB = mongoClient.getDB(FXMLDocumentController.DB);
         boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
         DBCollection table = BEYOU_DB.getCollection("items");
         BasicDBObject searchQuery = new BasicDBObject();
@@ -255,8 +231,8 @@ public class Items {
         maniTitle().setText(maniView.getSelectionModel().getSelectedItem().toString());
         String name = new String();
         name = maniView.getSelectionModel().getSelectedItem().toString();
-        String password = Password();
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        String password = FXMLDocumentController.beyouPass;
+        DB BEYOU_DB = mongoClient.getDB(FXMLDocumentController.DB);
         boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
         DBCollection table = BEYOU_DB.getCollection("items");
         BasicDBObject searchQuery = new BasicDBObject();
@@ -280,8 +256,8 @@ public class Items {
         pediTitle().setText(pediView.getSelectionModel().getSelectedItem().toString());
         String name = new String();
         name = pediView.getSelectionModel().getSelectedItem().toString();
-        String password = Password();
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        String password = FXMLDocumentController.beyouPass;
+        DB BEYOU_DB = mongoClient.getDB(FXMLDocumentController.DB);
         boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
         DBCollection table = BEYOU_DB.getCollection("items");
         BasicDBObject searchQuery = new BasicDBObject();
@@ -302,8 +278,8 @@ public class Items {
     }
 
     public void setMani() throws IOException {
-        String password = Password();
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        String password = FXMLDocumentController.beyouPass;
+        DB BEYOU_DB = mongoClient.getDB(FXMLDocumentController.DB);
         boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
         DBCollection table = BEYOU_DB.getCollection("items");
         BasicDBObject query = new BasicDBObject();
@@ -322,8 +298,8 @@ public class Items {
     }
 
     public void setPedi() throws IOException {
-        String password = Password();
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        String password = FXMLDocumentController.beyouPass;
+        DB BEYOU_DB = mongoClient.getDB(FXMLDocumentController.DB);
         boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
         DBCollection table = BEYOU_DB.getCollection("items");
         BasicDBObject query = new BasicDBObject();
@@ -342,8 +318,8 @@ public class Items {
     }
 
     public void setNails() throws IOException {
-        String password = Password();
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        String password = FXMLDocumentController.beyouPass;
+        DB BEYOU_DB = mongoClient.getDB(FXMLDocumentController.DB);
         boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
         DBCollection table = BEYOU_DB.getCollection("items");
         BasicDBObject query = new BasicDBObject();
@@ -362,8 +338,8 @@ public class Items {
     }
 
     public void newMani() throws IOException {
-        String password = Password();
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        String password = FXMLDocumentController.beyouPass;
+        DB BEYOU_DB = mongoClient.getDB(FXMLDocumentController.DB);
         boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
         DBCollection table = BEYOU_DB.getCollection("items");
         BasicDBObject document = new BasicDBObject();
@@ -384,7 +360,7 @@ public class Items {
                 BasicDBList theItems = (BasicDBList) service.get("items");
                 theItems.add(ItemId);
                 BasicDBObject query = new BasicDBObject();
-                query.put("_id", new ObjectId("54ebc48f53a2c2d504ac5909"));
+                query.put("_id", new ObjectId("54ebc49353a2c2d504ac5909"));
                 BasicDBObject newDocument = new BasicDBObject();
                 newDocument.put("items", theItems);
                 BasicDBObject updateObj = new BasicDBObject();
@@ -398,8 +374,8 @@ public class Items {
     }
 
     public void newPedi() throws IOException {
-        String password = Password();
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        String password = FXMLDocumentController.beyouPass;
+        DB BEYOU_DB = mongoClient.getDB(FXMLDocumentController.DB);
         boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
         DBCollection table = BEYOU_DB.getCollection("items");
         BasicDBObject document = new BasicDBObject();
@@ -434,8 +410,8 @@ public class Items {
     }
 
     public void newNail() throws IOException {
-        String password = Password();
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        String password = FXMLDocumentController.beyouPass;
+        DB BEYOU_DB = mongoClient.getDB(FXMLDocumentController.DB);
         boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
         DBCollection table = BEYOU_DB.getCollection("items");
         BasicDBObject document = new BasicDBObject();
@@ -465,6 +441,111 @@ public class Items {
             }
         }
         nailTitle().setText("");
+        nailDesc().setText("");
+        nailPrice().setText("");
+    }
+     public void delMani() throws IOException {
+        String password = FXMLDocumentController.beyouPass;
+        DB BEYOU_DB = mongoClient.getDB(FXMLDocumentController.DB);
+        boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
+        DBCollection table = BEYOU_DB.getCollection("services");
+        DBCollection table1 = BEYOU_DB.getCollection("items");
+        
+        ObjectId ItemId = new ObjectId(maniIDlabel().getText());
+        
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("name", "Manicures");
+        DBCursor cursor = table.find(searchQuery);
+        if (cursor.hasNext() == true) {
+            while (cursor.hasNext()) {
+                DBObject service = cursor.next();
+                BasicDBList theItems = (BasicDBList) service.get("items");
+                theItems.remove(ItemId);
+                BasicDBObject query = new BasicDBObject();
+                query.put("_id", new ObjectId("54ebc49353a2c2d504ac5909"));
+                BasicDBObject newDocument = new BasicDBObject();
+                newDocument.put("items", theItems);
+                BasicDBObject updateObj = new BasicDBObject();
+                updateObj.put("$set", newDocument);
+                table.update(query, updateObj);
+                
+                BasicDBObject deleteQuery = new BasicDBObject();
+                deleteQuery.put("_id", new ObjectId(maniIDlabel().getText()));
+                table1.remove(deleteQuery);
+                
+            }
+        }
+        maniTitle().setText("Item has been removed");
+        maniDesc().setText("");
+        maniPrice().setText("");
+    }
+     public void delPedi() throws IOException {
+         String password = FXMLDocumentController.beyouPass;
+        DB BEYOU_DB = mongoClient.getDB(FXMLDocumentController.DB);
+        boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
+        DBCollection table = BEYOU_DB.getCollection("services");
+        DBCollection table1 = BEYOU_DB.getCollection("items");
+        
+        ObjectId ItemId = new ObjectId(pediIDlabel().getText());
+        
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("name", "Pedicures");
+        DBCursor cursor = table.find(searchQuery);
+        if (cursor.hasNext() == true) {
+            while (cursor.hasNext()) {
+                DBObject service = cursor.next();
+                BasicDBList theItems = (BasicDBList) service.get("items");
+                theItems.remove(ItemId);
+                BasicDBObject query = new BasicDBObject();
+                query.put("_id", new ObjectId("54ebc49653a2c2d504ac590a"));
+                BasicDBObject newDocument = new BasicDBObject();
+                newDocument.put("items", theItems);
+                BasicDBObject updateObj = new BasicDBObject();
+                updateObj.put("$set", newDocument);
+                table.update(query, updateObj);
+                
+                BasicDBObject deleteQuery = new BasicDBObject();
+                deleteQuery.put("_id", new ObjectId(pediIDlabel().getText()));
+                table1.remove(deleteQuery);
+                
+            }
+        }
+        pediTitle().setText("Item has been removed");
+        pediDesc().setText("");
+        pediPrice().setText("");
+    }
+     public void delNail() throws IOException {
+         String password = FXMLDocumentController.beyouPass;
+        DB BEYOU_DB = mongoClient.getDB(FXMLDocumentController.DB);
+        boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
+        DBCollection table = BEYOU_DB.getCollection("services");
+        DBCollection table1 = BEYOU_DB.getCollection("items");
+        
+        ObjectId ItemId = new ObjectId(nailsIDlabel().getText());
+        
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("name", "Nails");
+        DBCursor cursor = table.find(searchQuery);
+        if (cursor.hasNext() == true) {
+            while (cursor.hasNext()) {
+                DBObject service = cursor.next();
+                BasicDBList theItems = (BasicDBList) service.get("items");
+                theItems.remove(ItemId);
+                BasicDBObject query = new BasicDBObject();
+                query.put("_id", new ObjectId("54ebc48f53a2c2d504ac5908"));
+                BasicDBObject newDocument = new BasicDBObject();
+                newDocument.put("items", theItems);
+                BasicDBObject updateObj = new BasicDBObject();
+                updateObj.put("$set", newDocument);
+                table.update(query, updateObj);
+                
+                BasicDBObject deleteQuery = new BasicDBObject();
+                deleteQuery.put("_id", new ObjectId(nailsIDlabel().getText()));
+                table1.remove(deleteQuery);
+                
+            }
+        }
+        nailTitle().setText("Item has been removed");
         nailDesc().setText("");
         nailPrice().setText("");
     }

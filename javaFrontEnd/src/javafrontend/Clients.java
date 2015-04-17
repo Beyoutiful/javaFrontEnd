@@ -13,7 +13,8 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import java.io.IOException;
 import java.net.UnknownHostException;
-import static javafrontend.FXMLDocumentController.Password;
+import static javafrontend.FXMLDocumentController.mongo;
+import static javafrontend.FXMLDocumentController.port;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -27,7 +28,7 @@ public class Clients {
     public Clients(FXMLDocumentController _controller) throws UnknownHostException {
 
         controller = _controller;
-        mongoClient = new MongoClient("ds035750.mongolab.com", 35750);
+        mongoClient = new MongoClient(mongo, port);
     }
 
     protected Label clientIDLabel() {
@@ -75,8 +76,8 @@ public class Clients {
     }
 
     public void searchClient(String Name) throws IOException {
-        String password = Password();
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        String password = FXMLDocumentController.beyouPass;
+        DB BEYOU_DB = mongoClient.getDB(FXMLDocumentController.DB);
         boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
         DBCollection table = BEYOU_DB.getCollection("clients");
         BasicDBObject searchQuery = new BasicDBObject();
@@ -99,7 +100,6 @@ public class Clients {
             }
         } else {
             clientNameField().setText(searchName().getText());
-            //clientNameField().setText("");
             clientEmailField().setText("");
             clientNumberField().setText("");
             streetNumberField().setText("");
@@ -111,8 +111,8 @@ public class Clients {
     }
 
     public void updateClient() throws IOException {
-        String password = Password();
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        String password = FXMLDocumentController.beyouPass;
+        DB BEYOU_DB = mongoClient.getDB(FXMLDocumentController.DB);
         boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
         DBCollection table = BEYOU_DB.getCollection("clients");
         BasicDBObject query = new BasicDBObject();
@@ -139,7 +139,7 @@ public class Clients {
     }
 
     public void newClient(String Name) {
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        DB BEYOU_DB = mongoClient.getDB(FXMLDocumentController.DB);
         DBCollection table = BEYOU_DB.getCollection("clients");
         BasicDBObject document = new BasicDBObject();
         document.put("name", clientNameField().getText());

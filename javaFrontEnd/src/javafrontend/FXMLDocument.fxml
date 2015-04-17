@@ -22,6 +22,30 @@
             </ImageView>
             <TabPane layoutY="94.0" prefHeight="681.0" prefWidth="1089.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
+                  <Tab fx:id="LoginTab" text="Login">
+                    <content>
+                      <AnchorPane>
+                           <children>
+                              <ImageView fitHeight="472.0" fitWidth="900.0" layoutX="173.0" layoutY="97.0" opacity="0.23" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/lips.jpg" />
+                                 </image>
+                                 
+                              </ImageView>
+                              <PasswordField fx:id="passField" layoutX="458.0" layoutY="313.0" promptText="password" />
+                              <TextField fx:id="userField" layoutX="458.0" layoutY="276.0" promptText="Username" />
+                              <Label fx:id="userLabel" layoutX="382.0" layoutY="280.0" text="User Name:" />
+                              <Label fx:id="passLabel" layoutX="387.0" layoutY="317.0" text="Password:" />
+                              <Label fx:id="loginLabel" layoutX="400.0" layoutY="216.0" prefHeight="34.0" prefWidth="236.0" text="Please enter your Login." textFill="#f20606">
+                                 <font>
+                                    <Font name="System Bold Italic" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="submit" layoutX="507.0" layoutY="353.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Submit" textFill="#11cf40" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
                 <Tab fx:id="clientTab" closable="false" disable="true" text="Client">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -68,31 +92,7 @@
                         </AnchorPane>
                   </content>
                 </Tab>
-                  <Tab fx:id="LoginTab" text="Login">
-                    <content>
-                      <AnchorPane>
-                           <children>
-                              <ImageView fitHeight="472.0" fitWidth="900.0" layoutX="173.0" layoutY="97.0" opacity="0.23" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/lips.jpg" />
-                                 </image>
-                                 
-                              </ImageView>
-                              <PasswordField fx:id="passField" layoutX="458.0" layoutY="313.0" promptText="password" />
-                              <TextField fx:id="userField" layoutX="458.0" layoutY="276.0" promptText="Username" />
-                              <Label fx:id="userLabel" layoutX="382.0" layoutY="280.0" text="User Name:" />
-                              <Label fx:id="passLabel" layoutX="387.0" layoutY="317.0" text="Password:" />
-                              <Label fx:id="loginLabel" layoutX="400.0" layoutY="216.0" prefHeight="34.0" prefWidth="236.0" text="Please enter your Login." textFill="#f20606">
-                                 <font>
-                                    <Font name="System Bold Italic" size="18.0" />
-                                 </font>
-                              </Label>
-                              <Button fx:id="submit" layoutX="507.0" layoutY="353.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Submit" textFill="#11cf40" />
-                           </children>
-                        </AnchorPane>
-                    </content>
-                  </Tab>
-                  <Tab fx:id="servicesTab" text="Services">
+                  <Tab fx:id="servicesTab" disable="true" text="Services">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="709.0" prefWidth="1333.0">
                            <children>
@@ -102,9 +102,9 @@
                                  </image>
                               </ImageView>
                               <ListView fx:id="maniView" layoutX="36.0" layoutY="40.0" prefHeight="139.0" prefWidth="523.0" />
-                              <Button fx:id="serviceManicure" layoutX="34.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleManiButton" text="Manicure" />
-                              <Button fx:id="servicePedicure" layoutX="35.0" layoutY="191.0" mnemonicParsing="false" onAction="#handlePediButton" text="Pedicure" />
-                              <Button fx:id="serviceNails" layoutX="36.0" layoutY="392.0" mnemonicParsing="false" onAction="#handleNailsButton" text="Nails" />
+                              <Button fx:id="serviceManicure" layoutX="34.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleManiButton" prefHeight="26.0" prefWidth="77.0" text="Manicure" />
+                              <Button fx:id="servicePedicure" layoutX="35.0" layoutY="191.0" mnemonicParsing="false" onAction="#handlePediButton" prefHeight="26.0" prefWidth="77.0" text="Pedicure" />
+                              <Button fx:id="serviceNails" layoutX="36.0" layoutY="400.0" mnemonicParsing="false" onAction="#handleNailsButton" prefHeight="26.0" prefWidth="77.0" text="Nails" />
                               <ListView fx:id="pediView" layoutX="36.0" layoutY="217.0" prefHeight="161.0" prefWidth="522.0" />
                               <ListView fx:id="nailView" layoutX="37.0" layoutY="425.0" prefHeight="151.0" prefWidth="521.0" />
                               <TextField fx:id="maniTitle" layoutX="609.0" layoutY="40.0" prefHeight="26.0" prefWidth="369.0" promptText="Service" />
@@ -125,9 +125,12 @@
                               <Label fx:id="maniIDlabel" layoutX="211.0" layoutY="19.0" text="Label" visible="false" />
                               <Label fx:id="pediIDlabel" layoutX="211.0" layoutY="196.0" text="Label" visible="false" />
                               <Label fx:id="nailsIDlabel" layoutX="211.0" layoutY="405.0" text="Label" visible="false" />
-                              <Button fx:id="maniUpdateButton" layoutX="677.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleManiUpdate" text="Update" />
-                              <Button fx:id="pediUpdateButton" layoutX="677.0" layoutY="331.0" mnemonicParsing="false" onAction="#handlePediUpdate" text="Update" />
-                              <Button fx:id="nailUpdateButton" layoutX="662.0" layoutY="541.0" mnemonicParsing="false" onAction="#handleNailUpdate" text="Update" />
+                              <Button fx:id="maniUpdateButton" layoutX="619.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleManiUpdate" text="Update" />
+                              <Button fx:id="pediUpdateButton" layoutX="619.0" layoutY="331.0" mnemonicParsing="false" onAction="#handlePediUpdate" text="Update" />
+                              <Button fx:id="nailUpdateButton" layoutX="614.0" layoutY="539.0" mnemonicParsing="false" onAction="#handleNailUpdate" text="Update" />
+                              <Button fx:id="maniDelete" layoutX="721.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleManiDelete" text="Delete" />
+                              <Button fx:id="pediDelete" layoutX="723.0" layoutY="331.0" mnemonicParsing="false" onAction="#handlePediDelete" text="Delete" />
+                              <Button fx:id="nailDelete" layoutX="721.0" layoutY="539.0" mnemonicParsing="false" onAction="#handleNailDelete" text="Delete" />
                            </children>
                         </AnchorPane>
                     </content>
@@ -159,7 +162,7 @@
                               <Button fx:id="techSearchButton" layoutX="173.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleTechSearchButtonAction" text="Search" />
                               <Button fx:id="techEditButton" layoutX="70.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleTechSaveButton" prefHeight="26.0" prefWidth="61.0" text="Save" />
                               <Label fx:id="techID" layoutX="70.0" layoutY="29.0" prefHeight="16.0" prefWidth="160.0" text="id number" visible="false" />
-                              <ImageView fx:id="techImageBox" fitHeight="613.0" fitWidth="526.0" layoutX="233.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="techImageBox" fitHeight="613.0" fitWidth="526.0" layoutX="308.0" pickOnBounds="true" preserveRatio="true" />
                               <Label layoutX="21.0" layoutY="61.0" text="Name" />
                               <Label layoutX="21.0" layoutY="132.0" text="Phone" />
                               <Label layoutX="21.0" layoutY="158.0" text="Email" />
@@ -187,16 +190,21 @@
                               </Label>
                               <Button fx:id="deleteProfileButton" layoutX="964.0" layoutY="513.0" mnemonicParsing="false" onAction="#handleDeleteProfileButton" text="Delete Profile" />
                               <Button fx:id="createProfileButton" layoutX="861.0" layoutY="513.0" mnemonicParsing="false" onAction="#handleCreateProfileButton" text="Create Profile" />
-                              <Button fx:id="uploadButton" layoutX="800.0" layoutY="560.0" mnemonicParsing="false" onAction="#handleNewImageButton" prefHeight="26.0" prefWidth="142.0" text="Upload New Image" />
+                              <Button fx:id="uploadButton" layoutX="861.0" layoutY="549.0" mnemonicParsing="false" onAction="#handleNewImageButton" prefHeight="26.0" prefWidth="142.0" text="Upload New Image" />
                            </children>
                         </AnchorPane>
                     </content>
                   </Tab>
-                  <Tab fx:id="appointmentsTab" text="Appointments">
+                  <Tab fx:id="appointmentsTab" disable="true" text="Appointments">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <WebView layoutX="124.0" layoutY="23.0" prefHeight="562.0" prefWidth="609.0" />
+                              <WebView fx:id="appointmentsWebView" layoutY="4.0" prefHeight="597.0" prefWidth="1089.0" />
+                              <Button fx:id="loadCalButton" layoutY="4.0" mnemonicParsing="false" onAction="#handleWebview" prefHeight="20.0" prefWidth="143.0" text="Load Calander">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                              </Button>
                            </children></AnchorPane>
                     </content>
                   </Tab>

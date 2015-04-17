@@ -28,7 +28,6 @@ import java.util.logging.Logger;
 import static javafrontend.FXMLDocumentController.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -111,12 +110,12 @@ public class Technicians {
 
     public Technicians(FXMLDocumentController _controller) throws UnknownHostException {
         controller = _controller;
-        mongoClient = new MongoClient("ds035750.mongolab.com", 35750);
+        mongoClient = new MongoClient(mongo, port);
     }
 
     public void deleteProfile(Label techID) throws IOException {
-        String password = Password();
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        String password = FXMLDocumentController.beyouPass;
+        DB BEYOU_DB = mongoClient.getDB(FXMLDocumentController.DB);
         boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
         DBCollection table = BEYOU_DB.getCollection("profiles");
         String ID = techID.getText();
@@ -137,8 +136,8 @@ public class Technicians {
     }
 
     public void createProfile(Label techID) throws IOException {
-        String password = Password();
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        String password = FXMLDocumentController.beyouPass;
+        DB BEYOU_DB = mongoClient.getDB(FXMLDocumentController.DB);
         boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
         DBCollection table = BEYOU_DB.getCollection("profiles");
         String ID = techID.getText();
@@ -152,7 +151,7 @@ public class Technicians {
         {
             String name = new String();
             name = techName().getText();
-            String password = Password();
+            String password = FXMLDocumentController.beyouPass;
             DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
             boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
             DBCollection table = BEYOU_DB.getCollection("technicians");
@@ -175,7 +174,7 @@ public class Technicians {
                     techTitle().setText(technicians.get("title").toString());
                     techImageURL().setText(technicians.get("image").toString());
                     techDescription().setText(technicians.get("description").toString());
-                    Image image = new Image("http://beyoutifulstudio.herokuapp.com/" + technicians.get("image"));
+                    Image image = new Image("http://res.cloudinary.com/hslj0appl/image/upload/v1427810959/" + technicians.get("image"));
                     techImageBox().setImage(image);
                 }
             }
@@ -183,8 +182,8 @@ public class Technicians {
     }
 
     public void updateTech() throws IOException {
-        String password = Password();
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        String password = FXMLDocumentController.beyouPass;
+        DB BEYOU_DB = mongoClient.getDB(FXMLDocumentController.DB);
         boolean auth = BEYOU_DB.authenticate("beyoutiful", password.toCharArray());
         DBCollection table = BEYOU_DB.getCollection("technicians");
         BasicDBObject query = new BasicDBObject();
@@ -219,7 +218,7 @@ public class Technicians {
 
     public void newTech() {
 
-        DB BEYOU_DB = mongoClient.getDB("heroku_app33977271");
+        DB BEYOU_DB = mongoClient.getDB(FXMLDocumentController.DB);
         DBCollection table = BEYOU_DB.getCollection("clients");
         BasicDBObject document = new BasicDBObject();
         document.put("name", techName().getText());
